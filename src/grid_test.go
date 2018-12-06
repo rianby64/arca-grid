@@ -67,6 +67,29 @@ func Test_Register_delete(t *testing.T) {
 	}
 }
 
+func Test_Register_update(t *testing.T) {
+	t.Log("Test register update definition")
+
+	// Setup
+	var updateDefinition RequestHandler = func(
+		requestParams *interface{},
+		context *interface{},
+		notify NotifyCallback,
+	) {
+	}
+
+	server := Grid{}
+
+	// Excercise
+	server.Register("update", &updateDefinition)
+
+	// Verify
+	if &updateDefinition != server.updateInternal {
+		t.Errorf("updateDefinition '%v' differs from internal update '%v'",
+			*server.updateInternal, &updateDefinition)
+	}
+}
+
 func Test_Notify_from_insertDefinition(t *testing.T) {
 	t.Log("Test notify from insertDefinition")
 

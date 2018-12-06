@@ -17,3 +17,12 @@ func (g *Grid) Delete(
 	go (*g.deleteInternal)(requestParams, context, g.Notify)
 	return nil
 }
+
+// Update whatever
+func (g *Grid) Update(
+	requestParams *interface{},
+	context *interface{},
+) error {
+	go (*g.updateInternal)(requestParams, context, g.Notify)
+	return nil
+}

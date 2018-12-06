@@ -31,5 +31,8 @@ func (g *Grid) Register(method string, handler *RequestHandler) error {
 	if method == "delete" {
 		g.deleteInternal = handler
 	}
+	if method == "update" {
+		g.updateInternal = handler
+	}
 	return nil
 }
