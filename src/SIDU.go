@@ -1,5 +1,14 @@
 package src
 
+// Select whatever
+func (g *Grid) Select(
+	requestParams *interface{},
+	context *interface{},
+) error {
+	go (*g.selectInternal)(requestParams, context, g.Notify)
+	return nil
+}
+
 // Insert whatever
 func (g *Grid) Insert(
 	requestParams *interface{},

@@ -21,6 +21,29 @@ func Test_Listen(t *testing.T) {
 	}
 }
 
+func Test_Register_select(t *testing.T) {
+	t.Log("Test register select definition")
+
+	// Setup
+	var selectDefinition RequestHandler = func(
+		requestParams *interface{},
+		context *interface{},
+		notify NotifyCallback,
+	) {
+	}
+
+	server := Grid{}
+
+	// Excercise
+	server.Register("select", &selectDefinition)
+
+	// Verify
+	if &selectDefinition != server.selectInternal {
+		t.Errorf("selectDefinition '%v' differs from internal select '%v'",
+			*server.selectInternal, &selectDefinition)
+	}
+}
+
 func Test_Register_insert(t *testing.T) {
 	t.Log("Test register insert definition")
 

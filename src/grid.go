@@ -25,6 +25,9 @@ func (g *Grid) Notify(message interface{}) {
 
 // Register whatever
 func (g *Grid) Register(method string, handler *RequestHandler) error {
+	if method == "select" {
+		g.selectInternal = handler
+	}
 	if method == "insert" {
 		g.insertInternal = handler
 	}
