@@ -21,8 +21,8 @@ func main() {
 	}
 
 	server.RegisterMethod("query", &insertHandler)
-	var request2 interface{} = request
-	result, _ := server.Query(&request2, nil)
+	var iRequest interface{} = request
+	result, _ := server.Query(&iRequest, nil)
 
 	log.Println(result)
 }
