@@ -29,7 +29,8 @@ func Test_RegisterMethod_select(t *testing.T) {
 		requestParams *interface{},
 		context *interface{},
 		notify NotifyCallback,
-	) {
+	) (*interface{}, error) {
+		return nil, nil
 	}
 
 	server := Grid{}
@@ -52,7 +53,8 @@ func Test_RegisterMethod_insert(t *testing.T) {
 		requestParams *interface{},
 		context *interface{},
 		notify NotifyCallback,
-	) {
+	) (*interface{}, error) {
+		return nil, nil
 	}
 
 	server := Grid{}
@@ -75,7 +77,8 @@ func Test_RegisterMethod_delete(t *testing.T) {
 		requestParams *interface{},
 		context *interface{},
 		notify NotifyCallback,
-	) {
+	) (*interface{}, error) {
+		return nil, nil
 	}
 
 	server := Grid{}
@@ -98,7 +101,8 @@ func Test_RegisterMethod_update(t *testing.T) {
 		requestParams *interface{},
 		context *interface{},
 		notify NotifyCallback,
-	) {
+	) (*interface{}, error) {
+		return nil, nil
 	}
 
 	server := Grid{}

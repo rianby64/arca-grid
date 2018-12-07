@@ -33,10 +33,11 @@ func Test_Notify_from_selectDefinition(t *testing.T) {
 		requestParams *interface{},
 		context *interface{},
 		notify src.NotifyCallback,
-	) {
+	) (*interface{}, error) {
 
 		// excercise
 		notify(msgExpected)
+		return nil, nil
 	}
 
 	server := src.Grid{}
@@ -82,10 +83,11 @@ func Test_Notify_from_insertDefinition(t *testing.T) {
 		requestParams *interface{},
 		context *interface{},
 		notify src.NotifyCallback,
-	) {
+	) (*interface{}, error) {
 
 		// excercise
 		notify(msgExpected)
+		return nil, nil
 	}
 
 	server := src.Grid{}
@@ -131,10 +133,11 @@ func Test_Notify_from_deleteDefinition(t *testing.T) {
 		requestParams *interface{},
 		context *interface{},
 		notify src.NotifyCallback,
-	) {
+	) (*interface{}, error) {
 
 		// excercise
 		notify(msgExpected)
+		return nil, nil
 	}
 
 	server := src.Grid{}
@@ -180,10 +183,11 @@ func Test_Notify_from_updateDefinition(t *testing.T) {
 		requestParams *interface{},
 		context *interface{},
 		notify src.NotifyCallback,
-	) {
+	) (*interface{}, error) {
 
 		// excercise
 		notify(msgExpected)
+		return nil, nil
 	}
 
 	server := src.Grid{}

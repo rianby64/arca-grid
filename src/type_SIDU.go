@@ -5,7 +5,7 @@ type NotifyCallback func(message interface{})
 
 // RequestHandler whatever
 type RequestHandler func(requestParams *interface{},
-	context *interface{}, notify NotifyCallback)
+	context *interface{}, notify NotifyCallback) (*interface{}, error)
 
 // InternalSIDU whatever
 type InternalSIDU struct {
