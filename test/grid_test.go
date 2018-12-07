@@ -33,7 +33,7 @@ func Test_Notify_from_queryDefinition(t *testing.T) {
 		requestParams *interface{},
 		context *interface{},
 		notify src.NotifyCallback,
-	) (*interface{}, error) {
+	) (interface{}, error) {
 
 		// excercise
 		notify(msgExpected)
@@ -83,7 +83,7 @@ func Test_Notify_from_insertDefinition(t *testing.T) {
 		requestParams *interface{},
 		context *interface{},
 		notify src.NotifyCallback,
-	) (*interface{}, error) {
+	) (interface{}, error) {
 
 		// excercise
 		notify(msgExpected)
@@ -133,7 +133,7 @@ func Test_Notify_from_deleteDefinition(t *testing.T) {
 		requestParams *interface{},
 		context *interface{},
 		notify src.NotifyCallback,
-	) (*interface{}, error) {
+	) (interface{}, error) {
 
 		// excercise
 		notify(msgExpected)
@@ -160,7 +160,7 @@ func Test_Notify_from_updateDefinition(t *testing.T) {
 	t.Log("Test notify from updateDefinition")
 
 	// Setup
-	ch := make(chan string)
+	var msgActual string
 	msgExpected := "message expected"
 
 	var listener src.NotifyCallback = func(message interface{}) {
@@ -173,17 +173,14 @@ func Test_Notify_from_updateDefinition(t *testing.T) {
 			t.Error("received message differs from the expected")
 		}
 
-		ch <- message.(string)
-
-		// tear down
-		close(ch)
+		msgActual = message.(string)
 	}
 
 	var updateDefinition src.RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
 		notify src.NotifyCallback,
-	) (*interface{}, error) {
+	) (interface{}, error) {
 
 		// excercise
 		notify(msgExpected)
@@ -196,22 +193,17 @@ func Test_Notify_from_updateDefinition(t *testing.T) {
 
 	// Excercise
 	server.Update(nil, nil)
-
-	msgActual, ok := <-ch
-	if !ok {
-		t.Error("Unexpected error")
-	}
 	if msgActual != msgExpected {
 		t.Error("received message differs from the expected")
 	}
 }
 
 func Test_Notifications_from_updateDefinition(t *testing.T) {
-	t.Log("Test notify from updateDefinition")
+	t.Log("Test notifications from updateDefinition")
 
 	// Setup
-	ch1 := make(chan string)
-	ch2 := make(chan string)
+	var msgActual1 string
+	var msgActual2 string
 	msgExpected := "message expected"
 
 	var listener1 src.NotifyCallback = func(message interface{}) {
@@ -223,11 +215,7 @@ func Test_Notifications_from_updateDefinition(t *testing.T) {
 		if message.(string) != msgExpected {
 			t.Error("received message differs from the expected")
 		}
-
-		ch1 <- message.(string)
-
-		// tear down
-		close(ch1)
+		msgActual1 = message.(string)
 	}
 
 	var listener2 src.NotifyCallback = func(message interface{}) {
@@ -239,18 +227,14 @@ func Test_Notifications_from_updateDefinition(t *testing.T) {
 		if message.(string) != msgExpected {
 			t.Error("received message differs from the expected")
 		}
-
-		ch2 <- message.(string)
-
-		// tear down
-		close(ch2)
+		msgActual2 = message.(string)
 	}
 
 	var updateDefinition src.RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
 		notify src.NotifyCallback,
-	) (*interface{}, error) {
+	) (interface{}, error) {
 
 		// excercise
 		notify(msgExpected)
@@ -265,20 +249,40 @@ func Test_Notifications_from_updateDefinition(t *testing.T) {
 	// Excercise
 	server.Update(nil, nil)
 
-	msgActual1, ok := <-ch1
-	if !ok {
-		t.Error("Unexpected error")
-	}
 	if msgActual1 != msgExpected {
 		t.Error("received message differs from the expected")
 	}
 
-	msgActual2, ok := <-ch2
-	if !ok {
-		t.Error("Unexpected error")
-	}
 	if msgActual2 != msgExpected {
 		t.Error("received message differs from the expected")
 	}
+}
 
+func Test_result_from_update(t *testing.T) {
+	t.Log("Test result from update")
+
+	// Setup
+	resultExpected := []string{"a complex result"}
+
+	var updateDefinition src.RequestHandler = func(
+		requestParams *interface{},
+		context *interface{},
+		notify src.NotifyCallback,
+	) (interface{}, error) {
+
+		// excercise
+		return resultExpected, nil
+	}
+
+	server := src.Grid{}
+	server.RegisterMethod("update", &updateDefinition)
+
+	// Excercise
+	resultActual, err := server.Update(nil, nil)
+	if err != nil {
+		t.Error("Unexpected error")
+	}
+	if resultActual == nil {
+		t.Error("Action server.Update returned nil")
+	}
 }

@@ -5,7 +5,7 @@ type NotifyCallback func(message interface{})
 
 // RequestHandler whatever
 type RequestHandler func(requestParams *interface{},
-	context *interface{}, notify NotifyCallback) (*interface{}, error)
+	context *interface{}, notify NotifyCallback) (interface{}, error)
 
 // InternalQUID whatever
 type InternalQUID struct {

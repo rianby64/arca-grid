@@ -29,7 +29,7 @@ func Test_RegisterMethod_query(t *testing.T) {
 		requestParams *interface{},
 		context *interface{},
 		notify NotifyCallback,
-	) (*interface{}, error) {
+	) (interface{}, error) {
 		return nil, nil
 	}
 
@@ -53,7 +53,7 @@ func Test_RegisterMethod_insert(t *testing.T) {
 		requestParams *interface{},
 		context *interface{},
 		notify NotifyCallback,
-	) (*interface{}, error) {
+	) (interface{}, error) {
 		return nil, nil
 	}
 
@@ -77,7 +77,7 @@ func Test_RegisterMethod_delete(t *testing.T) {
 		requestParams *interface{},
 		context *interface{},
 		notify NotifyCallback,
-	) (*interface{}, error) {
+	) (interface{}, error) {
 		return nil, nil
 	}
 
@@ -101,7 +101,7 @@ func Test_RegisterMethod_update(t *testing.T) {
 		requestParams *interface{},
 		context *interface{},
 		notify NotifyCallback,
-	) (*interface{}, error) {
+	) (interface{}, error) {
 		return nil, nil
 	}
 
@@ -125,28 +125,28 @@ func Test_RegisterMethod(t *testing.T) {
 		requestParams *interface{},
 		context *interface{},
 		notify NotifyCallback,
-	) (*interface{}, error) {
+	) (interface{}, error) {
 		return nil, nil
 	}
 	var update RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
 		notify NotifyCallback,
-	) (*interface{}, error) {
+	) (interface{}, error) {
 		return nil, nil
 	}
 	var insert RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
 		notify NotifyCallback,
-	) (*interface{}, error) {
+	) (interface{}, error) {
 		return nil, nil
 	}
 	var delete RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
 		notify NotifyCallback,
-	) (*interface{}, error) {
+	) (interface{}, error) {
 		return nil, nil
 	}
 	var methods = &InternalQUID{
