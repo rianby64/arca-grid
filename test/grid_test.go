@@ -6,8 +6,8 @@ import (
 	"../src"
 )
 
-func Test_Notify_from_selectDefinition(t *testing.T) {
-	t.Log("Test notify from selectDefinition")
+func Test_Notify_from_queryDefinition(t *testing.T) {
+	t.Log("Test notify from queryDefinition")
 
 	// Setup
 	ch := make(chan string)
@@ -29,7 +29,7 @@ func Test_Notify_from_selectDefinition(t *testing.T) {
 		close(ch)
 	}
 
-	var selectDefinition src.RequestHandler = func(
+	var queryDefinition src.RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
 		notify src.NotifyCallback,
@@ -42,10 +42,10 @@ func Test_Notify_from_selectDefinition(t *testing.T) {
 
 	server := src.Grid{}
 	server.Listen(&listener)
-	server.RegisterMethod("select", &selectDefinition)
+	server.RegisterMethod("query", &queryDefinition)
 
 	// Excercise
-	server.Select(nil, nil)
+	server.Query(nil, nil)
 
 	msgActual, ok := <-ch
 	if !ok {
