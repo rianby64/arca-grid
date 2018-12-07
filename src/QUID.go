@@ -4,9 +4,14 @@ package src
 func (g *Grid) Query(
 	requestParams *interface{},
 	context *interface{},
-) (interface{}, error) {
-	go (*g.query)(requestParams, context, g.Notify)
-	return nil, nil
+) (result interface{}, err error) {
+	done := make(chan bool)
+	go (func() {
+		result, err = (*g.query)(requestParams, context, g.Notify)
+		done <- true
+	})()
+	<-done
+	return
 }
 
 // Update whatever
@@ -41,7 +46,12 @@ func (g *Grid) Insert(
 func (g *Grid) Delete(
 	requestParams *interface{},
 	context *interface{},
-) (interface{}, error) {
-	go (*g.delete)(requestParams, context, g.Notify)
-	return nil, nil
+) (result interface{}, err error) {
+	done := make(chan bool)
+	go (func() {
+		result, err = (*g.delete)(requestParams, context, g.Notify)
+		done <- true
+	})()
+	<-done
+	return
 }
