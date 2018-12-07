@@ -42,5 +42,9 @@ func (g *Grid) RegisterMethod(method string, handler *RequestHandler) error {
 
 // Register whatever
 func (g *Grid) Register(methods *InternalQUID) error {
+	g.query = methods.query
+	g.update = methods.update
+	g.insert = methods.insert
+	g.delete = methods.delete
 	return nil
 }
