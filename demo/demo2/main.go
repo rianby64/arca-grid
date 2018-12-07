@@ -14,7 +14,7 @@ func main() {
 	request["action"] = "do-a-query"
 	request["query"] = "a custom query"
 
-	var insertHandler1 src.RequestHandler = func(requestParams *interface{},
+	var queryHandler1 src.RequestHandler = func(requestParams *interface{},
 		context *interface{}, notify src.NotifyCallback) (interface{}, error) {
 
 		var iRequest interface{} = request
@@ -24,7 +24,7 @@ func main() {
 		return result2, nil
 	}
 
-	var insertHandler2 src.RequestHandler = func(requestParams *interface{},
+	var queryHandler2 src.RequestHandler = func(requestParams *interface{},
 		context *interface{}, notify src.NotifyCallback) (interface{}, error) {
 
 		result := make(map[string]string)
@@ -32,8 +32,8 @@ func main() {
 		return result, nil
 	}
 
-	server1.RegisterMethod("query", &insertHandler1)
-	server2.RegisterMethod("query", &insertHandler2)
+	server1.RegisterMethod("query", &queryHandler1)
+	server2.RegisterMethod("query", &queryHandler2)
 	var iRequest interface{} = request
 	result, _ := server1.Query(&iRequest, nil)
 

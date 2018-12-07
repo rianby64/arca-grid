@@ -12,7 +12,7 @@ func main() {
 	request["action"] = "do-a-query"
 	request["query"] = "a custom query"
 
-	var insertHandler src.RequestHandler = func(requestParams *interface{},
+	var queryHandler src.RequestHandler = func(requestParams *interface{},
 		context *interface{}, notify src.NotifyCallback) (interface{}, error) {
 
 		result := make(map[string]string)
@@ -20,7 +20,7 @@ func main() {
 		return result, nil
 	}
 
-	server.RegisterMethod("query", &insertHandler)
+	server.RegisterMethod("query", &queryHandler)
 	var iRequest interface{} = request
 	result, _ := server.Query(&iRequest, nil)
 
