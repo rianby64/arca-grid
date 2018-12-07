@@ -113,7 +113,7 @@ func Test_result_from_insert(t *testing.T) {
 	t.Log("Test result from insert")
 
 	// Setup
-	resultExpected := []string{"a complex result"}
+	msgExpected := "a complex result"
 
 	var insertDefinition src.RequestHandler = func(
 		requestParams *interface{},
@@ -122,18 +122,21 @@ func Test_result_from_insert(t *testing.T) {
 	) (interface{}, error) {
 
 		// excercise
-		return resultExpected, nil
+		return msgExpected, nil
 	}
 
 	server := src.Grid{}
 	server.RegisterMethod("insert", &insertDefinition)
 
 	// Excercise
-	resultActual, err := server.Insert(nil, nil)
+	msgActual, err := server.Insert(nil, nil)
 	if err != nil {
 		t.Error("Unexpected error")
 	}
-	if resultActual == nil {
+	if msgActual == nil {
 		t.Error("Action server.insert returned nil")
+	}
+	if msgActual != msgExpected {
+		t.Error("result message differs from the expected")
 	}
 }
