@@ -7,18 +7,18 @@ type NotifyCallback func(message interface{})
 type RequestHandler func(requestParams *interface{},
 	context *interface{}, notify NotifyCallback) (*interface{}, error)
 
-// InternalSIDU whatever
-type InternalSIDU struct {
-	selectInternal *RequestHandler
-	insertInternal *RequestHandler
-	deleteInternal *RequestHandler
-	updateInternal *RequestHandler
+// InternalQUID whatever
+type InternalQUID struct {
+	query  *RequestHandler
+	update *RequestHandler
+	insert *RequestHandler
+	delete *RequestHandler
 }
 
-// SIDU whatever
-type SIDU interface {
-	Select()
+// QUID whatever
+type QUID interface {
+	Query()
+	Update()
 	Insert()
 	Delete()
-	Update()
 }

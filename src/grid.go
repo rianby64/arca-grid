@@ -23,23 +23,24 @@ func (g *Grid) Notify(message interface{}) {
 	}
 }
 
-// Register whatever
+// RegisterMethod whatever
 func (g *Grid) RegisterMethod(method string, handler *RequestHandler) error {
-	if method == "select" {
-		g.selectInternal = handler
-	}
-	if method == "insert" {
-		g.insertInternal = handler
-	}
-	if method == "delete" {
-		g.deleteInternal = handler
+	if method == "query" {
+		g.query = handler
 	}
 	if method == "update" {
-		g.updateInternal = handler
+		g.update = handler
+	}
+	if method == "insert" {
+		g.insert = handler
+	}
+	if method == "delete" {
+		g.delete = handler
 	}
 	return nil
 }
 
-func (g *Grid) Register(methods *InternalSIDU) error {
+// Register whatever
+func (g *Grid) Register(methods *InternalQUID) error {
 	return nil
 }

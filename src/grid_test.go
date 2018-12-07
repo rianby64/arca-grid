@@ -21,11 +21,11 @@ func Test_Listen(t *testing.T) {
 	}
 }
 
-func Test_RegisterMethod_select(t *testing.T) {
-	t.Log("Test RegisterMethod select definition")
+func Test_RegisterMethod_query(t *testing.T) {
+	t.Log("Test RegisterMethod query definition")
 
 	// Setup
-	var selectDefinition RequestHandler = func(
+	var queryDefinition RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
 		notify NotifyCallback,
@@ -36,12 +36,12 @@ func Test_RegisterMethod_select(t *testing.T) {
 	server := Grid{}
 
 	// Excercise
-	server.RegisterMethod("select", &selectDefinition)
+	server.RegisterMethod("query", &queryDefinition)
 
 	// Verify
-	if &selectDefinition != server.selectInternal {
-		t.Errorf("selectDefinition '%v' differs from internal select '%v'",
-			*server.selectInternal, &selectDefinition)
+	if &queryDefinition != server.query {
+		t.Errorf("queryDefinition '%v' differs from internal query '%v'",
+			*server.query, &queryDefinition)
 	}
 }
 
@@ -63,9 +63,9 @@ func Test_RegisterMethod_insert(t *testing.T) {
 	server.RegisterMethod("insert", &insertDefinition)
 
 	// Verify
-	if &insertDefinition != server.insertInternal {
+	if &insertDefinition != server.insert {
 		t.Errorf("insertDefinition '%v' differs from internal insert '%v'",
-			*server.insertInternal, &insertDefinition)
+			*server.insert, &insertDefinition)
 	}
 }
 
@@ -87,9 +87,9 @@ func Test_RegisterMethod_delete(t *testing.T) {
 	server.RegisterMethod("delete", &deleteDefinition)
 
 	// Verify
-	if &deleteDefinition != server.deleteInternal {
+	if &deleteDefinition != server.delete {
 		t.Errorf("deleteDefinition '%v' differs from internal delete '%v'",
-			*server.deleteInternal, &deleteDefinition)
+			*server.delete, &deleteDefinition)
 	}
 }
 
@@ -111,8 +111,61 @@ func Test_RegisterMethod_update(t *testing.T) {
 	server.RegisterMethod("update", &updateDefinition)
 
 	// Verify
-	if &updateDefinition != server.updateInternal {
+	if &updateDefinition != server.update {
 		t.Errorf("updateDefinition '%v' differs from internal update '%v'",
-			*server.updateInternal, &updateDefinition)
+			*server.update, &updateDefinition)
+	}
+}
+
+func Test_RegisterMethod(t *testing.T) {
+	t.Log("Test RegisterMethod update definition")
+
+	// Setup
+	var query RequestHandler = func(
+		requestParams *interface{},
+		context *interface{},
+		notify NotifyCallback,
+	) (*interface{}, error) {
+		return nil, nil
+	}
+	var update RequestHandler = func(
+		requestParams *interface{},
+		context *interface{},
+		notify NotifyCallback,
+	) (*interface{}, error) {
+		return nil, nil
+	}
+	var insert RequestHandler = func(
+		requestParams *interface{},
+		context *interface{},
+		notify NotifyCallback,
+	) (*interface{}, error) {
+		return nil, nil
+	}
+	var delete RequestHandler = func(
+		requestParams *interface{},
+		context *interface{},
+		notify NotifyCallback,
+	) (*interface{}, error) {
+		return nil, nil
+	}
+	var methods = &InternalQUID{
+		query:  &query,
+		update: &update,
+		insert: &insert,
+		delete: &delete,
+	}
+
+	server := Grid{}
+
+	// Excercise
+	server.Register(methods)
+
+	// Verify
+	if methods.query != server.query ||
+		methods.update != server.update ||
+		methods.insert != server.insert ||
+		methods.delete != server.delete {
+		t.Error("methods didn't register properly")
 	}
 }
