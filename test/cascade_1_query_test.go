@@ -7,8 +7,8 @@ import (
 	"../src"
 )
 
-func Test_cascade_query_2_servers(t *testing.T) {
-	t.Log("Cascade query with 2 servers")
+func Test_result_cascade_query_2_servers(t *testing.T) {
+	t.Log("Test result from cascade query with 2 servers")
 
 	server1 := src.Grid{}
 	server2 := src.Grid{}
