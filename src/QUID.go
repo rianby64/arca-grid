@@ -27,9 +27,14 @@ func (g *Grid) Update(
 func (g *Grid) Insert(
 	requestParams *interface{},
 	context *interface{},
-) (interface{}, error) {
-	go (*g.insert)(requestParams, context, g.Notify)
-	return nil, nil
+) (result interface{}, err error) {
+	done := make(chan bool)
+	go (func() {
+		result, err = (*g.insert)(requestParams, context, g.Notify)
+		done <- true
+	})()
+	<-done
+	return
 }
 
 // Delete whatever
