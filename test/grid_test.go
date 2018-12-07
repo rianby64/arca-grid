@@ -205,3 +205,80 @@ func Test_Notify_from_updateDefinition(t *testing.T) {
 		t.Error("received message differs from the expected")
 	}
 }
+
+func Test_Notifications_from_updateDefinition(t *testing.T) {
+	t.Log("Test notify from updateDefinition")
+
+	// Setup
+	ch1 := make(chan string)
+	ch2 := make(chan string)
+	msgExpected := "message expected"
+
+	var listener1 src.NotifyCallback = func(message interface{}) {
+
+		// verify
+		if message == nil {
+			t.Error("received message is nil")
+		}
+		if message.(string) != msgExpected {
+			t.Error("received message differs from the expected")
+		}
+
+		ch1 <- message.(string)
+
+		// tear down
+		close(ch1)
+	}
+
+	var listener2 src.NotifyCallback = func(message interface{}) {
+
+		// verify
+		if message == nil {
+			t.Error("received message is nil")
+		}
+		if message.(string) != msgExpected {
+			t.Error("received message differs from the expected")
+		}
+
+		ch2 <- message.(string)
+
+		// tear down
+		close(ch2)
+	}
+
+	var updateDefinition src.RequestHandler = func(
+		requestParams *interface{},
+		context *interface{},
+		notify src.NotifyCallback,
+	) (*interface{}, error) {
+
+		// excercise
+		notify(msgExpected)
+		return nil, nil
+	}
+
+	server := src.Grid{}
+	server.Listen(&listener1)
+	server.Listen(&listener2)
+	server.RegisterMethod("update", &updateDefinition)
+
+	// Excercise
+	server.Update(nil, nil)
+
+	msgActual1, ok := <-ch1
+	if !ok {
+		t.Error("Unexpected error")
+	}
+	if msgActual1 != msgExpected {
+		t.Error("received message differs from the expected")
+	}
+
+	msgActual2, ok := <-ch2
+	if !ok {
+		t.Error("Unexpected error")
+	}
+	if msgActual2 != msgExpected {
+		t.Error("received message differs from the expected")
+	}
+
+}
