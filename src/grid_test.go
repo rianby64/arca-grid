@@ -21,8 +21,8 @@ func Test_Listen(t *testing.T) {
 	}
 }
 
-func Test_Register_select(t *testing.T) {
-	t.Log("Test register select definition")
+func Test_RegisterMethod_select(t *testing.T) {
+	t.Log("Test RegisterMethod select definition")
 
 	// Setup
 	var selectDefinition RequestHandler = func(
@@ -35,7 +35,7 @@ func Test_Register_select(t *testing.T) {
 	server := Grid{}
 
 	// Excercise
-	server.Register("select", &selectDefinition)
+	server.RegisterMethod("select", &selectDefinition)
 
 	// Verify
 	if &selectDefinition != server.selectInternal {
@@ -44,8 +44,8 @@ func Test_Register_select(t *testing.T) {
 	}
 }
 
-func Test_Register_insert(t *testing.T) {
-	t.Log("Test register insert definition")
+func Test_RegisterMethod_insert(t *testing.T) {
+	t.Log("Test RegisterMethod insert definition")
 
 	// Setup
 	var insertDefinition RequestHandler = func(
@@ -58,7 +58,7 @@ func Test_Register_insert(t *testing.T) {
 	server := Grid{}
 
 	// Excercise
-	server.Register("insert", &insertDefinition)
+	server.RegisterMethod("insert", &insertDefinition)
 
 	// Verify
 	if &insertDefinition != server.insertInternal {
@@ -67,8 +67,8 @@ func Test_Register_insert(t *testing.T) {
 	}
 }
 
-func Test_Register_delete(t *testing.T) {
-	t.Log("Test register delete definition")
+func Test_RegisterMethod_delete(t *testing.T) {
+	t.Log("Test RegisterMethod delete definition")
 
 	// Setup
 	var deleteDefinition RequestHandler = func(
@@ -81,7 +81,7 @@ func Test_Register_delete(t *testing.T) {
 	server := Grid{}
 
 	// Excercise
-	server.Register("delete", &deleteDefinition)
+	server.RegisterMethod("delete", &deleteDefinition)
 
 	// Verify
 	if &deleteDefinition != server.deleteInternal {
@@ -90,8 +90,8 @@ func Test_Register_delete(t *testing.T) {
 	}
 }
 
-func Test_Register_update(t *testing.T) {
-	t.Log("Test register update definition")
+func Test_RegisterMethod_update(t *testing.T) {
+	t.Log("Test RegisterMethod update definition")
 
 	// Setup
 	var updateDefinition RequestHandler = func(
@@ -104,7 +104,7 @@ func Test_Register_update(t *testing.T) {
 	server := Grid{}
 
 	// Excercise
-	server.Register("update", &updateDefinition)
+	server.RegisterMethod("update", &updateDefinition)
 
 	// Verify
 	if &updateDefinition != server.updateInternal {

@@ -24,7 +24,7 @@ func (g *Grid) Notify(message interface{}) {
 }
 
 // Register whatever
-func (g *Grid) Register(method string, handler *RequestHandler) error {
+func (g *Grid) RegisterMethod(method string, handler *RequestHandler) error {
 	if method == "select" {
 		g.selectInternal = handler
 	}
@@ -37,5 +37,9 @@ func (g *Grid) Register(method string, handler *RequestHandler) error {
 	if method == "update" {
 		g.updateInternal = handler
 	}
+	return nil
+}
+
+func (g *Grid) Register(methods *InternalSIDU) error {
 	return nil
 }

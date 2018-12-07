@@ -41,7 +41,7 @@ func Test_Notify_from_selectDefinition(t *testing.T) {
 
 	server := src.Grid{}
 	server.Listen(&listener)
-	server.Register("select", &selectDefinition)
+	server.RegisterMethod("select", &selectDefinition)
 
 	// Excercise
 	server.Select(nil, nil)
@@ -90,7 +90,7 @@ func Test_Notify_from_insertDefinition(t *testing.T) {
 
 	server := src.Grid{}
 	server.Listen(&listener)
-	server.Register("insert", &insertDefinition)
+	server.RegisterMethod("insert", &insertDefinition)
 
 	// Excercise
 	server.Insert(nil, nil)
@@ -139,7 +139,7 @@ func Test_Notify_from_deleteDefinition(t *testing.T) {
 
 	server := src.Grid{}
 	server.Listen(&listener)
-	server.Register("delete", &deleteDefinition)
+	server.RegisterMethod("delete", &deleteDefinition)
 
 	// Excercise
 	server.Delete(nil, nil)
@@ -188,7 +188,7 @@ func Test_Notify_from_updateDefinition(t *testing.T) {
 
 	server := src.Grid{}
 	server.Listen(&listener)
-	server.Register("update", &updateDefinition)
+	server.RegisterMethod("update", &updateDefinition)
 
 	// Excercise
 	server.Update(nil, nil)

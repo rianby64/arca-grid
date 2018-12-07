@@ -7,7 +7,8 @@ type NotifyCallback func(message interface{})
 type RequestHandler func(requestParams *interface{},
 	context *interface{}, notify NotifyCallback)
 
-type internalSIDU struct {
+// InternalSIDU whatever
+type InternalSIDU struct {
 	selectInternal *RequestHandler
 	insertInternal *RequestHandler
 	deleteInternal *RequestHandler

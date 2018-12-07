@@ -5,13 +5,14 @@ type server interface {
 	Disconnect() error
 	Listen() error
 	Notify(callback *NotifyCallback)
-	Register(handler *RequestHandler) error
+	RegisterMethod(method string, handler *RequestHandler) error
+	Register(methods *InternalSIDU) error
 }
 
 // Grid whatever
 type Grid struct {
 	server
 	SIDU
-	internalSIDU
+	InternalSIDU
 	notifyHandlers []*NotifyCallback
 }
