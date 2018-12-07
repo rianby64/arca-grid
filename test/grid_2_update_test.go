@@ -194,3 +194,72 @@ func Test_result_from_update_and_notify(t *testing.T) {
 		t.Error("received message differs from the expected")
 	}
 }
+
+func Test_result_from_2updates_and_notify(t *testing.T) {
+	t.Log("Test result from two updates and notify")
+
+	// Setup
+	var msgActual1 interface{}
+	var msgActual2 interface{}
+	var msgExpected1 interface{} = "a complex result 1"
+	var msgExpected2 interface{} = "a complex result 2"
+
+	var listener src.NotifyCallback = func(message interface{}) {
+
+		// Verify
+		if message == nil {
+			t.Error("received message is nil")
+		}
+		if message.(string) == msgExpected1.(string) {
+			msgActual1 = message
+		}
+		if message.(string) == msgExpected2.(string) {
+			msgActual2 = message
+		}
+	}
+
+	var updateDefinition src.RequestHandler = func(
+		requestParams *interface{},
+		context *interface{},
+		notify src.NotifyCallback,
+	) (interface{}, error) {
+
+		// Excercise
+		notify(*requestParams)
+		return *requestParams, nil
+	}
+
+	server := src.Grid{}
+	server.Listen(&listener)
+	server.RegisterMethod("update", &updateDefinition)
+
+	// Excercise
+	msgActual1, err1 := server.Update(&msgExpected1, nil)
+	msgActual2, err2 := server.Update(&msgExpected2, nil)
+
+	if err1 != nil {
+		t.Error("Unexpected error")
+	}
+	if msgActual1 == nil {
+		t.Error("Action server.update returned nil")
+	}
+	if msgActual1.(string) != msgExpected1.(string) {
+		t.Error("Result message differs from the expected")
+	}
+	if msgActual1.(string) != msgExpected1.(string) {
+		t.Error("received message differs from the expected")
+	}
+
+	if err2 != nil {
+		t.Error("Unexpected error")
+	}
+	if msgActual2 == nil {
+		t.Error("Action server.update returned nil")
+	}
+	if msgActual2.(string) != msgExpected2.(string) {
+		t.Error("result message differs from the expected")
+	}
+	if msgActual2.(string) != msgExpected2.(string) {
+		t.Error("received message differs from the expected")
+	}
+}
