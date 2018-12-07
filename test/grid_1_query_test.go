@@ -10,6 +10,7 @@ func Test_Notify_from_queryDefinition(t *testing.T) {
 	t.Log("Test notify from queryDefinition")
 
 	// Setup
+	done := make(chan bool)
 	var msgActual string
 	msgExpected := "message expected"
 
@@ -24,6 +25,7 @@ func Test_Notify_from_queryDefinition(t *testing.T) {
 		}
 
 		msgActual = message.(string)
+		done <- true
 	}
 
 	var queryDefinition src.RequestHandler = func(
@@ -43,6 +45,7 @@ func Test_Notify_from_queryDefinition(t *testing.T) {
 
 	// Excercise
 	server.Query(nil, nil)
+	<-done
 
 	// Verify
 	if msgActual != msgExpected {
@@ -54,6 +57,8 @@ func Test_Notifications_from_queryDefinition(t *testing.T) {
 	t.Log("Test notifications from queryDefinition")
 
 	// Setup
+	done1 := make(chan bool)
+	done2 := make(chan bool)
 	var msgActual1 string
 	var msgActual2 string
 	msgExpected := "message expected"
@@ -68,6 +73,7 @@ func Test_Notifications_from_queryDefinition(t *testing.T) {
 			t.Error("received message differs from the expected")
 		}
 		msgActual1 = message.(string)
+		done1 <- true
 	}
 
 	var listener2 src.NotifyCallback = func(message interface{}) {
@@ -80,6 +86,7 @@ func Test_Notifications_from_queryDefinition(t *testing.T) {
 			t.Error("received message differs from the expected")
 		}
 		msgActual2 = message.(string)
+		done2 <- true
 	}
 
 	var queryDefinition src.RequestHandler = func(
@@ -100,6 +107,8 @@ func Test_Notifications_from_queryDefinition(t *testing.T) {
 
 	// Excercise
 	server.Query(nil, nil)
+	<-done1
+	<-done2
 
 	// Verify
 	if msgActual1 != msgExpected {
@@ -149,6 +158,7 @@ func Test_result_from_query_and_notify(t *testing.T) {
 	t.Log("Test result from query")
 
 	// Setup
+	done := make(chan bool)
 	var msgActual string
 	msgExpected := "a complex result"
 
@@ -162,6 +172,7 @@ func Test_result_from_query_and_notify(t *testing.T) {
 			t.Error("received message differs from the expected")
 		}
 		msgActual = message.(string)
+		done <- true
 	}
 
 	var queryDefinition src.RequestHandler = func(
@@ -181,6 +192,8 @@ func Test_result_from_query_and_notify(t *testing.T) {
 
 	// Excercise
 	resultActual, err := server.Query(nil, nil)
+	<-done
+
 	if err != nil {
 		t.Error("Unexpected error")
 	}
