@@ -26,7 +26,8 @@ func main() {
 		return result, nil
 	}
 
-	var listener1 src.NotifyCallback = func(message interface{}) {
+	var listener1 src.ListenCallback = func(
+		message interface{}, context interface{}) {
 		result := message.(map[string]string)
 		log.Println(result, "listener1")
 		done1 <- true
@@ -41,7 +42,8 @@ func main() {
 		return result, nil
 	}
 
-	var listener2 src.NotifyCallback = func(message interface{}) {
+	var listener2 src.ListenCallback = func(
+		message interface{}, context interface{}) {
 		result := message.(map[string]string)
 		log.Println(result, "listener2")
 

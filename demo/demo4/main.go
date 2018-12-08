@@ -13,7 +13,8 @@ func main() {
 	request["action"] = "do-something"
 	request["query"] = "a custom query"
 
-	var listener src.NotifyCallback = func(message interface{}) {
+	var listener src.ListenCallback = func(
+		message interface{}, context interface{}) {
 		result := message.(map[string]string)
 		log.Println(result, "notified")
 		done <- true
