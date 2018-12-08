@@ -4,7 +4,7 @@ type server interface {
 	Connect() error
 	Disconnect() error
 	Listen() error
-	Notify(callback *NotifyCallback)
+	notify(callback *NotifyCallback)
 	RegisterMethod(method string, handler *RequestHandler) error
 	Register(methods *QUID) error
 }
