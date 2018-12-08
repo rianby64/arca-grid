@@ -20,11 +20,10 @@ func Test_result_cascade_query_2_servers(t *testing.T) {
 	var queryHandler1 src.RequestHandler = func(requestParams *interface{},
 		context *interface{}, notify src.NotifyCallback) (interface{}, error) {
 
-		var iRequest interface{} = request
-		iResult2, _ := server2.Query(&iRequest, nil)
-		result2 := iResult2.(map[string]string)
-		result2["data"] = fmt.Sprintf("%s + %s", result2["data"], "another data")
-		return result2, nil
+		iResult, _ := server2.Query(requestParams, nil)
+		result := iResult.(map[string]string)
+		result["data"] = fmt.Sprintf("%s + %s", result["data"], "another data")
+		return result, nil
 	}
 
 	var queryHandler2 src.RequestHandler = func(requestParams *interface{},
@@ -37,9 +36,75 @@ func Test_result_cascade_query_2_servers(t *testing.T) {
 
 	server1.RegisterMethod("query", &queryHandler1)
 	server2.RegisterMethod("query", &queryHandler2)
+
 	var iRequest interface{} = request
 	result, _ := server1.Query(&iRequest, nil)
 
+	if result.(map[string]string)["data"] != msgExpected {
+		t.Error("Result data differs from the expected")
+	}
+}
+
+func Test_notify_cascade_query_2_servers(t *testing.T) {
+	t.Log("Test notify from cascade query with 2 servers")
+
+	done1 := make(chan bool)
+	done2 := make(chan bool)
+	server1 := src.Grid{}
+	server2 := src.Grid{}
+	request := make(map[string]string)
+	request["action"] = "do-a-query"
+	request["query"] = "a custom query"
+	msgExpected := "a custom query + another data"
+
+	var queryHandler1 src.RequestHandler = func(requestParams *interface{},
+		context *interface{}, notify src.NotifyCallback) (interface{}, error) {
+
+		iResult, _ := server2.Query(requestParams, nil)
+		newresult := make(map[string]string)
+		result := iResult.(map[string]string)
+		for key, value := range result {
+			newresult[key] = value
+		}
+		newresult["data"] = fmt.Sprintf("%s + %s", result["data"], "another data")
+		notify(newresult)
+		return newresult, nil
+	}
+
+	var listener1 src.NotifyCallback = func(message interface{}) {
+		result := message.(map[string]string)
+		if result["data"] != msgExpected {
+			t.Error("listener1 got a wrong message")
+		}
+		done1 <- true
+	}
+
+	var queryHandler2 src.RequestHandler = func(requestParams *interface{},
+		context *interface{}, notify src.NotifyCallback) (interface{}, error) {
+
+		result := make(map[string]string)
+		result["data"] = (*requestParams).(map[string]string)["query"]
+		notify(result)
+		return result, nil
+	}
+
+	var listener2 src.NotifyCallback = func(message interface{}) {
+		result := message.(map[string]string)
+		if result["data"] != request["query"] {
+			t.Error("listener2 got a wrong message")
+		}
+		done2 <- true
+	}
+
+	server1.RegisterMethod("query", &queryHandler1)
+	server2.RegisterMethod("query", &queryHandler2)
+	server1.Listen(&listener1)
+	server2.Listen(&listener2)
+	var iRequest interface{} = request
+	result, _ := server1.Query(&iRequest, nil)
+
+	<-done1
+	<-done2
 	if result.(map[string]string)["data"] != msgExpected {
 		t.Error("Result data differs from the expected")
 	}
