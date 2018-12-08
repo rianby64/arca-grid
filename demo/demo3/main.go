@@ -21,7 +21,7 @@ func main() {
 
 		var iRequest interface{} = request
 		result := iRequest.(map[string]string)
-		result["data"] = fmt.Sprintf("%s + %s", result["data"], "another data")
+		result["data"] = fmt.Sprintf("%s + %s", result["query"], "another data")
 		notify(result)
 		return result, nil
 	}
