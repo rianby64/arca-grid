@@ -17,7 +17,7 @@ func main() {
 	var queryHandler1 src.RequestHandler = func(requestParams *interface{},
 		context *interface{}, notify src.NotifyCallback) (interface{}, error) {
 
-		var iRequest interface{} = request
+		var iRequest interface{} = *requestParams
 		iResult2, _ := server2.Query(&iRequest, nil)
 		result2 := iResult2.(map[string]string)
 		result2["data"] = fmt.Sprintf("%s + %s", result2["data"], "another data")
