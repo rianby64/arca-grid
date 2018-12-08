@@ -16,7 +16,7 @@ func main() {
 	var listener src.ListenCallback = func(
 		message interface{}, context interface{}) {
 		result := message.(map[string]string)
-		log.Println(result, "notified")
+		log.Println(result, "notified with context", context)
 		done <- true
 	}
 
@@ -62,10 +62,14 @@ func main() {
 	server.Register(&methods)
 	server.Listen(&listener)
 	var iRequest interface{} = request
-	go server.Query(&iRequest, nil)
-	go server.Update(&iRequest, nil)
-	go server.Insert(&iRequest, nil)
-	go server.Delete(&iRequest, nil)
+	var iCtxQuery interface{} = map[string]string{"ctx": "Query"}
+	go server.Query(&iRequest, &iCtxQuery)
+	var iCtxUpdate interface{} = map[string]string{"ctx": "Update"}
+	go server.Update(&iRequest, &iCtxUpdate)
+	var iCtxInsert interface{} = map[string]string{"ctx": "Insert"}
+	go server.Insert(&iRequest, &iCtxInsert)
+	var iCtxDelete interface{} = map[string]string{"ctx": "Delete"}
+	go server.Delete(&iRequest, &iCtxDelete)
 
 	times := 0
 	for {
