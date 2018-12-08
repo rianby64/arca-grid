@@ -15,13 +15,13 @@ func Test_listen_with_context(t *testing.T) {
 	msgExpected := "message expected"
 
 	var listener src.ListenCallback = func(
-		_ interface{},
-		context interface{},
-	) {
+		_ interface{}, context interface{}) {
 
 		// Verify
 		if context == nil {
 			t.Error("received message is nil")
+			done <- true
+			return
 		}
 		if context.(string) != msgExpected {
 			t.Error("received message differs from the expected")
