@@ -51,10 +51,14 @@ func main() {
 		return result, nil
 	}
 
-	server.RegisterMethod("query", &queryHandler)
-	server.RegisterMethod("update", &updateHandler)
-	server.RegisterMethod("insert", &insertHandler)
-	server.RegisterMethod("delete", &deleteHandler)
+	methods := src.QUID{
+		Query:  &queryHandler,
+		Update: &updateHandler,
+		Insert: &insertHandler,
+		Delete: &deleteHandler,
+	}
+
+	server.Register(&methods)
 	server.Listen(&listener)
 	var iRequest interface{} = request
 	go server.Query(&iRequest, nil)

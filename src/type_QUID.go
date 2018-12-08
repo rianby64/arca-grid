@@ -7,16 +7,23 @@ type NotifyCallback func(message interface{})
 type RequestHandler func(requestParams *interface{},
 	context *interface{}, notify NotifyCallback) (interface{}, error)
 
-// InternalQUID whatever
-type InternalQUID struct {
+// QUID whatever
+type QUID struct {
+	Query  *RequestHandler
+	Update *RequestHandler
+	Insert *RequestHandler
+	Delete *RequestHandler
+}
+
+type internalQUID struct {
 	query  *RequestHandler
 	update *RequestHandler
 	insert *RequestHandler
 	delete *RequestHandler
 }
 
-// QUID whatever
-type QUID interface {
+// InternalQUID whatever
+type InternalQUID interface {
 	Query()
 	Update()
 	Insert()

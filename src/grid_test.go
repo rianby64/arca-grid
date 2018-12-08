@@ -149,11 +149,11 @@ func Test_RegisterMethod(t *testing.T) {
 	) (interface{}, error) {
 		return nil, nil
 	}
-	var methods = &InternalQUID{
-		query:  &query,
-		update: &update,
-		insert: &insert,
-		delete: &delete,
+	var methods = &QUID{
+		Query:  &query,
+		Update: &update,
+		Insert: &insert,
+		Delete: &delete,
 	}
 
 	server := Grid{}
@@ -162,10 +162,10 @@ func Test_RegisterMethod(t *testing.T) {
 	server.Register(methods)
 
 	// Verify
-	if methods.query != server.query ||
-		methods.update != server.update ||
-		methods.insert != server.insert ||
-		methods.delete != server.delete {
+	if methods.Query != server.query ||
+		methods.Update != server.update ||
+		methods.Insert != server.insert ||
+		methods.Delete != server.delete {
 		t.Error("methods didn't register properly")
 	}
 }
