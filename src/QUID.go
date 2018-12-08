@@ -5,7 +5,13 @@ func (g *Grid) Query(
 	requestParams *interface{},
 	context *interface{},
 ) (result interface{}, err error) {
-	var notify NotifyCallback = g.notify
+	var notify NotifyCallback = func(message interface{}) {
+		var ctx interface{}
+		if context != nil {
+			ctx = *context
+		}
+		(*g).notify(message, ctx)
+	}
 	return callInternal(g.query, &notify, requestParams, context)
 }
 
@@ -14,7 +20,13 @@ func (g *Grid) Update(
 	requestParams *interface{},
 	context *interface{},
 ) (result interface{}, err error) {
-	var notify NotifyCallback = g.notify
+	var notify NotifyCallback = func(message interface{}) {
+		var ctx interface{}
+		if context != nil {
+			ctx = *context
+		}
+		(*g).notify(message, ctx)
+	}
 	return callInternal(g.update, &notify, requestParams, context)
 }
 
@@ -23,7 +35,13 @@ func (g *Grid) Insert(
 	requestParams *interface{},
 	context *interface{},
 ) (result interface{}, err error) {
-	var notify NotifyCallback = g.notify
+	var notify NotifyCallback = func(message interface{}) {
+		var ctx interface{}
+		if context != nil {
+			ctx = *context
+		}
+		(*g).notify(message, ctx)
+	}
 	return callInternal(g.insert, &notify, requestParams, context)
 }
 
@@ -32,7 +50,13 @@ func (g *Grid) Delete(
 	requestParams *interface{},
 	context *interface{},
 ) (result interface{}, err error) {
-	var notify NotifyCallback = g.notify
+	var notify NotifyCallback = func(message interface{}) {
+		var ctx interface{}
+		if context != nil {
+			ctx = *context
+		}
+		(*g).notify(message, ctx)
+	}
 	return callInternal(g.delete, &notify, requestParams, context)
 }
 

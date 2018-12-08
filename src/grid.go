@@ -17,9 +17,9 @@ func (g *Grid) Listen(callback *ListenCallback) error {
 }
 
 // Notify whatever
-func (g *Grid) notify(message interface{}) {
+func (g *Grid) notify(message interface{}, context interface{}) {
 	for _, handler := range g.listenHandlers {
-		go (*handler)(message, nil)
+		go (*handler)(message, context)
 	}
 }
 
