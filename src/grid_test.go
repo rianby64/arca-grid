@@ -117,8 +117,8 @@ func Test_RegisterMethod_update(t *testing.T) {
 	}
 }
 
-func Test_RegisterMethod(t *testing.T) {
-	t.Log("Test RegisterMethod update definition")
+func Test_Register_methods(t *testing.T) {
+	t.Log("Test Register methods")
 
 	// Setup
 	var query RequestHandler = func(
