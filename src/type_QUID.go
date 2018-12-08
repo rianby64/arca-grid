@@ -3,6 +3,9 @@ package src
 // NotifyCallback whatever
 type NotifyCallback func(message interface{})
 
+// ListenCallback whatever
+type ListenCallback func(message interface{}, contexst interface{})
+
 // RequestHandler whatever
 type RequestHandler func(requestParams *interface{},
 	context *interface{}, notify NotifyCallback) (interface{}, error)

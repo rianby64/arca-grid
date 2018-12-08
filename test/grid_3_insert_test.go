@@ -14,7 +14,8 @@ func Test_Notify_from_insertDefinition(t *testing.T) {
 	var msgActual string
 	msgExpected := "message expected"
 
-	var listener src.NotifyCallback = func(message interface{}) {
+	var listener src.ListenCallback = func(
+		message interface{}, context interface{}) {
 
 		// verify
 		if message == nil {
@@ -62,7 +63,8 @@ func Test_Notifications_from_insertDefinition(t *testing.T) {
 	var msgActual2 string
 	msgExpected := "message expected"
 
-	var listener1 src.NotifyCallback = func(message interface{}) {
+	var listener1 src.ListenCallback = func(
+		message interface{}, context interface{}) {
 
 		// verify
 		if message == nil {
@@ -75,7 +77,8 @@ func Test_Notifications_from_insertDefinition(t *testing.T) {
 		done1 <- true
 	}
 
-	var listener2 src.NotifyCallback = func(message interface{}) {
+	var listener2 src.ListenCallback = func(
+		message interface{}, context interface{}) {
 
 		// verify
 		if message == nil {
@@ -158,7 +161,8 @@ func Test_result_from_insert_and_notify(t *testing.T) {
 	var msgActual string
 	msgExpected := "a complex result"
 
-	var listener src.NotifyCallback = func(message interface{}) {
+	var listener src.ListenCallback = func(
+		message interface{}, context interface{}) {
 
 		// Verify
 		if message == nil {
@@ -213,7 +217,8 @@ func Test_result_from_2inserts_and_notify(t *testing.T) {
 	var msgExpected1 interface{} = "a complex result 1"
 	var msgExpected2 interface{} = "a complex result 2"
 
-	var listener src.NotifyCallback = func(message interface{}) {
+	var listener src.ListenCallback = func(
+		message interface{}, context interface{}) {
 
 		// Verify
 		if message == nil {

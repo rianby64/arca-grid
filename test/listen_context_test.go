@@ -14,7 +14,7 @@ func Test_listen_with_context(t *testing.T) {
 	var msgActual string
 	msgExpected := "message expected"
 
-	var listener src.NotifyCallback = func(
+	var listener src.ListenCallback = func(
 		_ interface{},
 		context interface{},
 	) {

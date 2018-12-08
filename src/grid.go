@@ -11,15 +11,15 @@ func (g *Grid) Disconnect() error {
 }
 
 // Listen whatever
-func (g *Grid) Listen(callback *NotifyCallback) error {
-	g.notifyHandlers = append(g.notifyHandlers, callback)
+func (g *Grid) Listen(callback *ListenCallback) error {
+	g.listenHandlers = append(g.listenHandlers, callback)
 	return nil
 }
 
 // Notify whatever
 func (g *Grid) Notify(message interface{}) {
-	for _, handler := range g.notifyHandlers {
-		go (*handler)(message)
+	for _, handler := range g.listenHandlers {
+		go (*handler)(message, nil)
 	}
 }
 

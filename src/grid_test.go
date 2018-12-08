@@ -9,15 +9,18 @@ func Test_Listen(t *testing.T) {
 
 	// Setup
 	server := Grid{}
-	var listener NotifyCallback = func(message interface{}) {
+	var listener ListenCallback = func(
+		message interface{},
+		context interface{},
+	) {
 	}
 
 	// Excercise
 	server.Listen(&listener)
 
 	// Verify
-	if len(server.notifyHandlers) == 0 {
-		t.Errorf("handlers '%v' is empty", server.notifyHandlers)
+	if len(server.listenHandlers) == 0 {
+		t.Errorf("handlers '%v' is empty", server.listenHandlers)
 	}
 }
 

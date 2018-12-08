@@ -14,5 +14,5 @@ type Grid struct {
 	server
 	internalQUID
 	InternalQUID
-	notifyHandlers []*NotifyCallback
+	listenHandlers []*ListenCallback
 }

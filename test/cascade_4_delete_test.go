@@ -71,7 +71,8 @@ func Test_notify_from_cascade_delete_2_servers(t *testing.T) {
 		return newresult, nil
 	}
 
-	var listener1 src.NotifyCallback = func(message interface{}) {
+	var listener1 src.ListenCallback = func(
+		message interface{}, context interface{}) {
 		result := message.(map[string]string)
 		if result["data"] != msgExpected {
 			t.Error("listener1 got a wrong message")
@@ -88,7 +89,8 @@ func Test_notify_from_cascade_delete_2_servers(t *testing.T) {
 		return result, nil
 	}
 
-	var listener2 src.NotifyCallback = func(message interface{}) {
+	var listener2 src.ListenCallback = func(
+		message interface{}, context interface{}) {
 		result := message.(map[string]string)
 		if result["data"] != request["delete"] {
 			t.Error("listener2 got a wrong message")
@@ -133,7 +135,8 @@ func Test_notify_from_cascade_delete_notifier_2_servers(t *testing.T) {
 		return result, nil
 	}
 
-	var listener1 src.NotifyCallback = func(message interface{}) {
+	var listener1 src.ListenCallback = func(
+		message interface{}, context interface{}) {
 		result := message.(map[string]string)
 		if result["data"] != msgExpected1 {
 			t.Error("msgExpected1 differs from the actual")
@@ -150,7 +153,8 @@ func Test_notify_from_cascade_delete_notifier_2_servers(t *testing.T) {
 		return result, nil
 	}
 
-	var listener2 src.NotifyCallback = func(message interface{}) {
+	var listener2 src.ListenCallback = func(
+		message interface{}, context interface{}) {
 		result := message.(map[string]string)
 		if result["data"] != msgExpected2 {
 			t.Error("msgExpected2 differs from the actual")
