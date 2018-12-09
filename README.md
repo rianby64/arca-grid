@@ -8,5 +8,3 @@ Actualmente se utiliza un sistema simple basado en el patron _LISTEN/NOTIFY_ par
 
 ## Por hacer
 - _Listen_ segun metodo. Ej. _Listen_ sobre _Query_, sobre _Update_ ...
-- _Before_ y _After_
-- Esquema sencillo de administración de transacciones
