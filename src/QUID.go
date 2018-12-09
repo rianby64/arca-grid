@@ -5,13 +5,7 @@ func (g *Grid) Query(
 	requestParams *interface{},
 	context *interface{},
 ) (result interface{}, err error) {
-	var notify NotifyCallback = func(message interface{}) {
-		var ctx interface{}
-		if context != nil {
-			ctx = *context
-		}
-		(*g).notify(message, ctx)
-	}
+	var notify ListenCallback = g.notify
 	return callInternal(g.query, &notify, requestParams, context)
 }
 
@@ -20,13 +14,7 @@ func (g *Grid) Update(
 	requestParams *interface{},
 	context *interface{},
 ) (result interface{}, err error) {
-	var notify NotifyCallback = func(message interface{}) {
-		var ctx interface{}
-		if context != nil {
-			ctx = *context
-		}
-		(*g).notify(message, ctx)
-	}
+	var notify ListenCallback = g.notify
 	return callInternal(g.update, &notify, requestParams, context)
 }
 
@@ -35,13 +23,7 @@ func (g *Grid) Insert(
 	requestParams *interface{},
 	context *interface{},
 ) (result interface{}, err error) {
-	var notify NotifyCallback = func(message interface{}) {
-		var ctx interface{}
-		if context != nil {
-			ctx = *context
-		}
-		(*g).notify(message, ctx)
-	}
+	var notify ListenCallback = g.notify
 	return callInternal(g.insert, &notify, requestParams, context)
 }
 
@@ -50,25 +32,26 @@ func (g *Grid) Delete(
 	requestParams *interface{},
 	context *interface{},
 ) (result interface{}, err error) {
-	var notify NotifyCallback = func(message interface{}) {
-		var ctx interface{}
-		if context != nil {
-			ctx = *context
-		}
-		(*g).notify(message, ctx)
-	}
+	var notify ListenCallback = g.notify
 	return callInternal(g.delete, &notify, requestParams, context)
 }
 
 func callInternal(
 	handler *RequestHandler,
-	notify *NotifyCallback,
+	notify *ListenCallback,
 	requestParams *interface{},
 	context *interface{},
 ) (result interface{}, err error) {
 	done := make(chan bool)
+	var Notify NotifyCallback = func(message interface{}) {
+		var ctx interface{}
+		if context != nil {
+			ctx = *context
+		}
+		(*notify)(message, ctx)
+	}
 	go (func() {
-		result, err = (*handler)(requestParams, context, *notify)
+		result, err = (*handler)(requestParams, context, Notify)
 		done <- true
 	})()
 	<-done
