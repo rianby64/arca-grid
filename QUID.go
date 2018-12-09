@@ -1,4 +1,4 @@
-package src
+package grid
 
 // Query whatever
 func (g *Grid) Query(

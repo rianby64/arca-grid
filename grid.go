@@ -1,4 +1,4 @@
-package src
+package grid
 
 // Connect whatever
 func (g *Grid) Connect(to *Grid) error {

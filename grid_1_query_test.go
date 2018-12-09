@@ -1,9 +1,7 @@
-package test
+package grid
 
 import (
 	"testing"
-
-	"../src"
 )
 
 func Test_Notify_from_queryDefinition(t *testing.T) {
@@ -14,7 +12,7 @@ func Test_Notify_from_queryDefinition(t *testing.T) {
 	var msgActual string
 	msgExpected := "message expected"
 
-	var listener src.ListenCallback = func(
+	var listener ListenCallback = func(
 		message interface{}, context interface{}) {
 
 		// Verify
@@ -29,10 +27,10 @@ func Test_Notify_from_queryDefinition(t *testing.T) {
 		done <- true
 	}
 
-	var queryDefinition src.RequestHandler = func(
+	var queryDefinition RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
-		notify src.NotifyCallback,
+		notify NotifyCallback,
 	) (interface{}, error) {
 
 		// Excercise
@@ -40,7 +38,7 @@ func Test_Notify_from_queryDefinition(t *testing.T) {
 		return nil, nil
 	}
 
-	server := src.Grid{}
+	server := Grid{}
 	server.Listen(&listener)
 	server.RegisterMethod("query", &queryDefinition)
 
@@ -64,7 +62,7 @@ func Test_Notifications_from_queryDefinition(t *testing.T) {
 	var msgActual2 string
 	msgExpected := "message expected"
 
-	var listener1 src.ListenCallback = func(
+	var listener1 ListenCallback = func(
 		message interface{}, context interface{}) {
 
 		// Verify
@@ -78,7 +76,7 @@ func Test_Notifications_from_queryDefinition(t *testing.T) {
 		done1 <- true
 	}
 
-	var listener2 src.ListenCallback = func(
+	var listener2 ListenCallback = func(
 		message interface{}, context interface{}) {
 
 		// Verify
@@ -92,10 +90,10 @@ func Test_Notifications_from_queryDefinition(t *testing.T) {
 		done2 <- true
 	}
 
-	var queryDefinition src.RequestHandler = func(
+	var queryDefinition RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
-		notify src.NotifyCallback,
+		notify NotifyCallback,
 	) (interface{}, error) {
 
 		// Excercise
@@ -103,7 +101,7 @@ func Test_Notifications_from_queryDefinition(t *testing.T) {
 		return nil, nil
 	}
 
-	server := src.Grid{}
+	server := Grid{}
 	server.Listen(&listener1)
 	server.Listen(&listener2)
 	server.RegisterMethod("query", &queryDefinition)
@@ -129,17 +127,17 @@ func Test_result_from_query(t *testing.T) {
 	// Setup
 	msgExpected := "a complex result"
 
-	var queryDefinition src.RequestHandler = func(
+	var queryDefinition RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
-		notify src.NotifyCallback,
+		notify NotifyCallback,
 	) (interface{}, error) {
 
 		// Excercise
 		return msgExpected, nil
 	}
 
-	server := src.Grid{}
+	server := Grid{}
 	server.RegisterMethod("query", &queryDefinition)
 
 	// Excercise
@@ -165,7 +163,7 @@ func Test_result_from_query_and_notify(t *testing.T) {
 	var msgActual string
 	msgExpected := "a complex result"
 
-	var listener src.ListenCallback = func(
+	var listener ListenCallback = func(
 		message interface{}, context interface{}) {
 
 		// Verify
@@ -179,10 +177,10 @@ func Test_result_from_query_and_notify(t *testing.T) {
 		done <- true
 	}
 
-	var queryDefinition src.RequestHandler = func(
+	var queryDefinition RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
-		notify src.NotifyCallback,
+		notify NotifyCallback,
 	) (interface{}, error) {
 
 		// Excercise
@@ -190,7 +188,7 @@ func Test_result_from_query_and_notify(t *testing.T) {
 		return msgExpected, nil
 	}
 
-	server := src.Grid{}
+	server := Grid{}
 	server.Listen(&listener)
 	server.RegisterMethod("query", &queryDefinition)
 
@@ -221,7 +219,7 @@ func Test_result_from_2querys_and_notify(t *testing.T) {
 	var msgExpected1 interface{} = "a complex result 1"
 	var msgExpected2 interface{} = "a complex result 2"
 
-	var listener src.ListenCallback = func(
+	var listener ListenCallback = func(
 		message interface{}, context interface{}) {
 
 		// Verify
@@ -236,10 +234,10 @@ func Test_result_from_2querys_and_notify(t *testing.T) {
 		}
 	}
 
-	var queryDefinition src.RequestHandler = func(
+	var queryDefinition RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
-		notify src.NotifyCallback,
+		notify NotifyCallback,
 	) (interface{}, error) {
 
 		// Excercise
@@ -247,7 +245,7 @@ func Test_result_from_2querys_and_notify(t *testing.T) {
 		return *requestParams, nil
 	}
 
-	server := src.Grid{}
+	server := Grid{}
 	server.Listen(&listener)
 	server.RegisterMethod("query", &queryDefinition)
 

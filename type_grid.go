@@ -1,4 +1,4 @@
-package src
+package grid
 
 type server interface {
 	Connect() error

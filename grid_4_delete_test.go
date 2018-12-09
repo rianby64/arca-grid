@@ -1,23 +1,21 @@
-package test
+package grid
 
 import (
 	"testing"
-
-	"../src"
 )
 
-func Test_Notify_from_insertDefinition(t *testing.T) {
-	t.Log("Test notify from insertDefinition")
+func Test_Notify_from_deleteDefinition(t *testing.T) {
+	t.Log("Test notify from deleteDefinition")
 
 	// Setup
 	done := make(chan bool)
 	var msgActual string
 	msgExpected := "message expected"
 
-	var listener src.ListenCallback = func(
+	var listener ListenCallback = func(
 		message interface{}, context interface{}) {
 
-		// verify
+		// Verify
 		if message == nil {
 			t.Error("received message is nil")
 		}
@@ -29,32 +27,33 @@ func Test_Notify_from_insertDefinition(t *testing.T) {
 		done <- true
 	}
 
-	var insertDefinition src.RequestHandler = func(
+	var deleteDefinition RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
-		notify src.NotifyCallback,
+		notify NotifyCallback,
 	) (interface{}, error) {
 
-		// excercise
+		// Excercise
 		notify(msgExpected)
 		return nil, nil
 	}
 
-	server := src.Grid{}
+	server := Grid{}
 	server.Listen(&listener)
-	server.RegisterMethod("insert", &insertDefinition)
+	server.RegisterMethod("delete", &deleteDefinition)
 
 	// Excercise
-	server.Insert(nil, nil)
+	server.Delete(nil, nil)
 	<-done
 
+	// Verify
 	if msgActual != msgExpected {
 		t.Error("received message differs from the expected")
 	}
 }
 
-func Test_Notifications_from_insertDefinition(t *testing.T) {
-	t.Log("Test notifications from insertDefinition")
+func Test_Notifications_from_deleteDefinition(t *testing.T) {
+	t.Log("Test notifications from deleteDefinition")
 
 	// Setup
 	done1 := make(chan bool)
@@ -63,10 +62,10 @@ func Test_Notifications_from_insertDefinition(t *testing.T) {
 	var msgActual2 string
 	msgExpected := "message expected"
 
-	var listener1 src.ListenCallback = func(
+	var listener1 ListenCallback = func(
 		message interface{}, context interface{}) {
 
-		// verify
+		// Verify
 		if message == nil {
 			t.Error("received message is nil")
 		}
@@ -77,10 +76,10 @@ func Test_Notifications_from_insertDefinition(t *testing.T) {
 		done1 <- true
 	}
 
-	var listener2 src.ListenCallback = func(
+	var listener2 ListenCallback = func(
 		message interface{}, context interface{}) {
 
-		// verify
+		// Verify
 		if message == nil {
 			t.Error("received message is nil")
 		}
@@ -91,27 +90,28 @@ func Test_Notifications_from_insertDefinition(t *testing.T) {
 		done2 <- true
 	}
 
-	var insertDefinition src.RequestHandler = func(
+	var deleteDefinition RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
-		notify src.NotifyCallback,
+		notify NotifyCallback,
 	) (interface{}, error) {
 
-		// excercise
+		// Excercise
 		notify(msgExpected)
 		return nil, nil
 	}
 
-	server := src.Grid{}
+	server := Grid{}
 	server.Listen(&listener1)
 	server.Listen(&listener2)
-	server.RegisterMethod("insert", &insertDefinition)
+	server.RegisterMethod("delete", &deleteDefinition)
 
 	// Excercise
-	server.Insert(nil, nil)
+	server.Delete(nil, nil)
 	<-done1
 	<-done2
 
+	// Verify
 	if msgActual1 != msgExpected {
 		t.Error("received message differs from the expected")
 	}
@@ -121,47 +121,49 @@ func Test_Notifications_from_insertDefinition(t *testing.T) {
 	}
 }
 
-func Test_result_from_insert(t *testing.T) {
-	t.Log("Test result from insert")
+func Test_result_from_delete(t *testing.T) {
+	t.Log("Test result from delete")
 
 	// Setup
 	msgExpected := "a complex result"
 
-	var insertDefinition src.RequestHandler = func(
+	var deleteDefinition RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
-		notify src.NotifyCallback,
+		notify NotifyCallback,
 	) (interface{}, error) {
 
-		// excercise
+		// Excercise
 		return msgExpected, nil
 	}
 
-	server := src.Grid{}
-	server.RegisterMethod("insert", &insertDefinition)
+	server := Grid{}
+	server.RegisterMethod("delete", &deleteDefinition)
 
 	// Excercise
-	msgActual, err := server.Insert(nil, nil)
+	msgActual, err := server.Delete(nil, nil)
+
+	// Verify
 	if err != nil {
 		t.Error("Unexpected error")
 	}
 	if msgActual == nil {
-		t.Error("Action server.insert returned nil")
+		t.Error("Action server.delete returned nil")
 	}
 	if msgActual != msgExpected {
-		t.Error("result message differs from the expected")
+		t.Error("received message differs from the expected")
 	}
 }
 
-func Test_result_from_insert_and_notify(t *testing.T) {
-	t.Log("Test result from insert and notify")
+func Test_result_from_delete_and_notify(t *testing.T) {
+	t.Log("Test result from delete")
 
 	// Setup
 	done := make(chan bool)
 	var msgActual string
 	msgExpected := "a complex result"
 
-	var listener src.ListenCallback = func(
+	var listener ListenCallback = func(
 		message interface{}, context interface{}) {
 
 		// Verify
@@ -175,10 +177,10 @@ func Test_result_from_insert_and_notify(t *testing.T) {
 		done <- true
 	}
 
-	var insertDefinition src.RequestHandler = func(
+	var deleteDefinition RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
-		notify src.NotifyCallback,
+		notify NotifyCallback,
 	) (interface{}, error) {
 
 		// Excercise
@@ -186,19 +188,19 @@ func Test_result_from_insert_and_notify(t *testing.T) {
 		return msgExpected, nil
 	}
 
-	server := src.Grid{}
+	server := Grid{}
 	server.Listen(&listener)
-	server.RegisterMethod("insert", &insertDefinition)
+	server.RegisterMethod("delete", &deleteDefinition)
 
 	// Excercise
-	resultActual, err := server.Insert(nil, nil)
+	resultActual, err := server.Delete(nil, nil)
 	<-done
 
 	if err != nil {
 		t.Error("Unexpected error")
 	}
 	if resultActual == nil {
-		t.Error("Action server.insert returned nil")
+		t.Error("Action server.delete returned nil")
 	}
 	if resultActual != msgExpected {
 		t.Error("result message differs from the expected")
@@ -208,8 +210,8 @@ func Test_result_from_insert_and_notify(t *testing.T) {
 	}
 }
 
-func Test_result_from_2inserts_and_notify(t *testing.T) {
-	t.Log("Test result from two inserts and notify")
+func Test_result_from_2deletes_and_notify(t *testing.T) {
+	t.Log("Test result from two deletes and notify")
 
 	// Setup
 	var msgActual1 interface{}
@@ -217,7 +219,7 @@ func Test_result_from_2inserts_and_notify(t *testing.T) {
 	var msgExpected1 interface{} = "a complex result 1"
 	var msgExpected2 interface{} = "a complex result 2"
 
-	var listener src.ListenCallback = func(
+	var listener ListenCallback = func(
 		message interface{}, context interface{}) {
 
 		// Verify
@@ -232,10 +234,10 @@ func Test_result_from_2inserts_and_notify(t *testing.T) {
 		}
 	}
 
-	var insertDefinition src.RequestHandler = func(
+	var deleteDefinition RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
-		notify src.NotifyCallback,
+		notify NotifyCallback,
 	) (interface{}, error) {
 
 		// Excercise
@@ -243,19 +245,19 @@ func Test_result_from_2inserts_and_notify(t *testing.T) {
 		return *requestParams, nil
 	}
 
-	server := src.Grid{}
+	server := Grid{}
 	server.Listen(&listener)
-	server.RegisterMethod("insert", &insertDefinition)
+	server.RegisterMethod("delete", &deleteDefinition)
 
 	// Excercise
-	msgActual1, err1 := server.Insert(&msgExpected1, nil)
-	msgActual2, err2 := server.Insert(&msgExpected2, nil)
+	msgActual1, err1 := server.Delete(&msgExpected1, nil)
+	msgActual2, err2 := server.Delete(&msgExpected2, nil)
 
 	if err1 != nil {
 		t.Error("Unexpected error")
 	}
 	if msgActual1 == nil {
-		t.Error("Action server.insert returned nil")
+		t.Error("Action server.delete returned nil")
 	}
 	if msgActual1.(string) != msgExpected1.(string) {
 		t.Error("Result message differs from the expected")
@@ -268,7 +270,7 @@ func Test_result_from_2inserts_and_notify(t *testing.T) {
 		t.Error("Unexpected error")
 	}
 	if msgActual2 == nil {
-		t.Error("Action server.insert returned nil")
+		t.Error("Action server.delete returned nil")
 	}
 	if msgActual2.(string) != msgExpected2.(string) {
 		t.Error("result message differs from the expected")

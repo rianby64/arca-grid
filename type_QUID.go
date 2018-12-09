@@ -1,4 +1,4 @@
-package src
+package grid
 
 // NotifyCallback whatever
 type NotifyCallback func(message interface{})

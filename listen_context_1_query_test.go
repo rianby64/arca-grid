@@ -1,20 +1,18 @@
-package test
+package grid
 
 import (
 	"testing"
-
-	"../src"
 )
 
-func Test_listen_insert_with_context(t *testing.T) {
-	t.Log("Test listen to insert with context")
+func Test_listen_query_with_context(t *testing.T) {
+	t.Log("Test listen to query with context")
 
 	// Setup
 	done := make(chan bool)
 	var msgActual string
 	msgExpected := "message expected"
 
-	var listener src.ListenCallback = func(
+	var listener ListenCallback = func(
 		_ interface{}, context interface{}) {
 
 		// Verify
@@ -31,10 +29,10 @@ func Test_listen_insert_with_context(t *testing.T) {
 		done <- true
 	}
 
-	var insertDefinition src.RequestHandler = func(
+	var queryDefinition RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
-		notify src.NotifyCallback,
+		notify NotifyCallback,
 	) (interface{}, error) {
 
 		// Excercise
@@ -42,13 +40,13 @@ func Test_listen_insert_with_context(t *testing.T) {
 		return nil, nil
 	}
 
-	server := src.Grid{}
+	server := Grid{}
 	server.Listen(&listener)
-	server.RegisterMethod("insert", &insertDefinition)
+	server.RegisterMethod("query", &queryDefinition)
 
 	// Excercise
 	var context interface{} = msgExpected
-	server.Insert(nil, &context)
+	server.Query(nil, &context)
 	<-done
 
 	// Verify

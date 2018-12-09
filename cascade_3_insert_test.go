@@ -1,24 +1,22 @@
-package test
+package grid
 
 import (
 	"fmt"
 	"testing"
-
-	"../src"
 )
 
 func Test_result_cascade_insert_2_servers(t *testing.T) {
 	t.Log("Test result from cascade insert with 2 servers")
 
-	server1 := src.Grid{}
-	server2 := src.Grid{}
+	server1 := Grid{}
+	server2 := Grid{}
 	request := make(map[string]string)
 	request["action"] = "do-a-insert"
 	request["insert"] = "a custom insert"
 	msgExpected := "a custom insert + another data"
 
-	var insertHandler1 src.RequestHandler = func(requestParams *interface{},
-		context *interface{}, notify src.NotifyCallback) (interface{}, error) {
+	var insertHandler1 RequestHandler = func(requestParams *interface{},
+		context *interface{}, notify NotifyCallback) (interface{}, error) {
 
 		iResult, _ := server2.Insert(requestParams, nil)
 		result := iResult.(map[string]string)
@@ -26,8 +24,8 @@ func Test_result_cascade_insert_2_servers(t *testing.T) {
 		return result, nil
 	}
 
-	var insertHandler2 src.RequestHandler = func(requestParams *interface{},
-		context *interface{}, notify src.NotifyCallback) (interface{}, error) {
+	var insertHandler2 RequestHandler = func(requestParams *interface{},
+		context *interface{}, notify NotifyCallback) (interface{}, error) {
 
 		result := make(map[string]string)
 		result["data"] = (*requestParams).(map[string]string)["insert"]
@@ -50,15 +48,15 @@ func Test_notify_from_cascade_insert_2_servers(t *testing.T) {
 
 	done1 := make(chan bool)
 	done2 := make(chan bool)
-	server1 := src.Grid{}
-	server2 := src.Grid{}
+	server1 := Grid{}
+	server2 := Grid{}
 	request := make(map[string]string)
 	request["action"] = "do-a-insert"
 	request["insert"] = "a custom insert"
 	msgExpected := "a custom insert + another data"
 
-	var insertHandler1 src.RequestHandler = func(requestParams *interface{},
-		context *interface{}, notify src.NotifyCallback) (interface{}, error) {
+	var insertHandler1 RequestHandler = func(requestParams *interface{},
+		context *interface{}, notify NotifyCallback) (interface{}, error) {
 
 		iResult, _ := server2.Insert(requestParams, nil)
 		newresult := make(map[string]string)
@@ -71,7 +69,7 @@ func Test_notify_from_cascade_insert_2_servers(t *testing.T) {
 		return newresult, nil
 	}
 
-	var listener1 src.ListenCallback = func(
+	var listener1 ListenCallback = func(
 		message interface{}, context interface{}) {
 		result := message.(map[string]string)
 		if result["data"] != msgExpected {
@@ -80,8 +78,8 @@ func Test_notify_from_cascade_insert_2_servers(t *testing.T) {
 		done1 <- true
 	}
 
-	var insertHandler2 src.RequestHandler = func(requestParams *interface{},
-		context *interface{}, notify src.NotifyCallback) (interface{}, error) {
+	var insertHandler2 RequestHandler = func(requestParams *interface{},
+		context *interface{}, notify NotifyCallback) (interface{}, error) {
 
 		result := make(map[string]string)
 		result["data"] = (*requestParams).(map[string]string)["insert"]
@@ -89,7 +87,7 @@ func Test_notify_from_cascade_insert_2_servers(t *testing.T) {
 		return result, nil
 	}
 
-	var listener2 src.ListenCallback = func(
+	var listener2 ListenCallback = func(
 		message interface{}, context interface{}) {
 		result := message.(map[string]string)
 		if result["data"] != request["insert"] {
@@ -115,8 +113,8 @@ func Test_notify_from_cascade_insert_2_servers(t *testing.T) {
 func Test_notify_from_cascade_insert_notifier_2_servers(t *testing.T) {
 	t.Log("Test notify from cascade insert that triggers a notification with 2 servers")
 
-	server1 := src.Grid{}
-	server2 := src.Grid{}
+	server1 := Grid{}
+	server2 := Grid{}
 	done1 := make(chan bool)
 	done2 := make(chan bool)
 	request := make(map[string]string)
@@ -125,8 +123,8 @@ func Test_notify_from_cascade_insert_notifier_2_servers(t *testing.T) {
 	msgExpected1 := "a custom insert + another data"
 	msgExpected2 := "a custom insert"
 
-	var insertHandler1 src.RequestHandler = func(requestParams *interface{},
-		context *interface{}, notify src.NotifyCallback) (interface{}, error) {
+	var insertHandler1 RequestHandler = func(requestParams *interface{},
+		context *interface{}, notify NotifyCallback) (interface{}, error) {
 
 		request := (*requestParams).(map[string]string)
 		result := make(map[string]string)
@@ -135,7 +133,7 @@ func Test_notify_from_cascade_insert_notifier_2_servers(t *testing.T) {
 		return result, nil
 	}
 
-	var listener1 src.ListenCallback = func(
+	var listener1 ListenCallback = func(
 		message interface{}, context interface{}) {
 		result := message.(map[string]string)
 		if result["data"] != msgExpected1 {
@@ -144,8 +142,8 @@ func Test_notify_from_cascade_insert_notifier_2_servers(t *testing.T) {
 		done1 <- true
 	}
 
-	var insertHandler2 src.RequestHandler = func(requestParams *interface{},
-		context *interface{}, notify src.NotifyCallback) (interface{}, error) {
+	var insertHandler2 RequestHandler = func(requestParams *interface{},
+		context *interface{}, notify NotifyCallback) (interface{}, error) {
 
 		result := make(map[string]string)
 		result["data"] = (*requestParams).(map[string]string)["insert"]
@@ -153,7 +151,7 @@ func Test_notify_from_cascade_insert_notifier_2_servers(t *testing.T) {
 		return result, nil
 	}
 
-	var listener2 src.ListenCallback = func(
+	var listener2 ListenCallback = func(
 		message interface{}, context interface{}) {
 		result := message.(map[string]string)
 		if result["data"] != msgExpected2 {
