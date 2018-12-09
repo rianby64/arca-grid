@@ -6,8 +6,8 @@ import (
 	"../src"
 )
 
-func Test_listen_with_context(t *testing.T) {
-	t.Log("Test result from cascade query with 2 servers")
+func Test_listen_delete_with_context(t *testing.T) {
+	t.Log("Test result from cascade delete with 2 servers")
 
 	// Setup
 	done := make(chan bool)
@@ -31,7 +31,7 @@ func Test_listen_with_context(t *testing.T) {
 		done <- true
 	}
 
-	var queryDefinition src.RequestHandler = func(
+	var deleteDefinition src.RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
 		notify src.NotifyCallback,
@@ -44,11 +44,11 @@ func Test_listen_with_context(t *testing.T) {
 
 	server := src.Grid{}
 	server.Listen(&listener)
-	server.RegisterMethod("query", &queryDefinition)
+	server.RegisterMethod("delete", &deleteDefinition)
 
 	// Excercise
 	var context interface{} = msgExpected
-	server.Query(nil, &context)
+	server.Delete(nil, &context)
 	<-done
 
 	// Verify
