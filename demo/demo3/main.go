@@ -4,20 +4,20 @@ import (
 	"fmt"
 	"log"
 
-	"../../src"
+	arcagrid "../.."
 )
 
 func main() {
-	server1 := src.Grid{}
-	server2 := src.Grid{}
+	server1 := arcagrid.Grid{}
+	server2 := arcagrid.Grid{}
 	done1 := make(chan bool)
 	done2 := make(chan bool)
 	request := make(map[string]string)
 	request["action"] = "do-a-query"
 	request["query"] = "a custom query"
 
-	var queryHandler1 src.RequestHandler = func(requestParams *interface{},
-		context *interface{}, notify src.NotifyCallback) (interface{}, error) {
+	var queryHandler1 arcagrid.RequestHandler = func(requestParams *interface{},
+		context *interface{}, notify arcagrid.NotifyCallback) (interface{}, error) {
 
 		var iRequest interface{} = request
 		result := iRequest.(map[string]string)
@@ -26,15 +26,15 @@ func main() {
 		return result, nil
 	}
 
-	var listener1 src.ListenCallback = func(
+	var listener1 arcagrid.ListenCallback = func(
 		message interface{}, context interface{}) {
 		result := message.(map[string]string)
 		log.Println(result, "listener1")
 		done1 <- true
 	}
 
-	var queryHandler2 src.RequestHandler = func(requestParams *interface{},
-		context *interface{}, notify src.NotifyCallback) (interface{}, error) {
+	var queryHandler2 arcagrid.RequestHandler = func(requestParams *interface{},
+		context *interface{}, notify arcagrid.NotifyCallback) (interface{}, error) {
 
 		result := make(map[string]string)
 		result["data"] = (*requestParams).(map[string]string)["query"]
@@ -42,7 +42,7 @@ func main() {
 		return result, nil
 	}
 
-	var listener2 src.ListenCallback = func(
+	var listener2 arcagrid.ListenCallback = func(
 		message interface{}, context interface{}) {
 		result := message.(map[string]string)
 		log.Println(result, "listener2")

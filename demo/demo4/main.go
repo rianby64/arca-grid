@@ -3,56 +3,56 @@ package main
 import (
 	"log"
 
-	"../../src"
+	arcagrid "../.."
 )
 
 func main() {
-	server := src.Grid{}
+	server := arcagrid.Grid{}
 	done := make(chan bool)
 	request := make(map[string]string)
 	request["action"] = "do-something"
 	request["query"] = "a custom query"
 
-	var listener src.ListenCallback = func(
+	var listener arcagrid.ListenCallback = func(
 		message interface{}, context interface{}) {
 		result := message.(map[string]string)
 		log.Println(result, "notified with context", context)
 		done <- true
 	}
 
-	var queryHandler src.RequestHandler = func(requestParams *interface{},
-		context *interface{}, notify src.NotifyCallback) (interface{}, error) {
+	var queryHandler arcagrid.RequestHandler = func(requestParams *interface{},
+		context *interface{}, notify arcagrid.NotifyCallback) (interface{}, error) {
 		result := make(map[string]string)
 		result["query"] = (*requestParams).(map[string]string)["query"]
 		notify(result)
 		return result, nil
 	}
 
-	var updateHandler src.RequestHandler = func(requestParams *interface{},
-		context *interface{}, notify src.NotifyCallback) (interface{}, error) {
+	var updateHandler arcagrid.RequestHandler = func(requestParams *interface{},
+		context *interface{}, notify arcagrid.NotifyCallback) (interface{}, error) {
 		result := make(map[string]string)
 		result["update"] = (*requestParams).(map[string]string)["query"]
 		notify(result)
 		return result, nil
 	}
 
-	var insertHandler src.RequestHandler = func(requestParams *interface{},
-		context *interface{}, notify src.NotifyCallback) (interface{}, error) {
+	var insertHandler arcagrid.RequestHandler = func(requestParams *interface{},
+		context *interface{}, notify arcagrid.NotifyCallback) (interface{}, error) {
 		result := make(map[string]string)
 		result["insert"] = (*requestParams).(map[string]string)["query"]
 		notify(result)
 		return result, nil
 	}
 
-	var deleteHandler src.RequestHandler = func(requestParams *interface{},
-		context *interface{}, notify src.NotifyCallback) (interface{}, error) {
+	var deleteHandler arcagrid.RequestHandler = func(requestParams *interface{},
+		context *interface{}, notify arcagrid.NotifyCallback) (interface{}, error) {
 		result := make(map[string]string)
 		result["delete"] = (*requestParams).(map[string]string)["query"]
 		notify(result)
 		return result, nil
 	}
 
-	methods := src.QUID{
+	methods := arcagrid.QUID{
 		Query:  &queryHandler,
 		Update: &updateHandler,
 		Insert: &insertHandler,

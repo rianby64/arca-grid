@@ -1,8 +1,6 @@
 package grid
 
 type server interface {
-	Connect() error
-	Disconnect() error
 	Listen() error
 	notify(callback *NotifyCallback)
 	RegisterMethod(method string, handler *RequestHandler) error

@@ -1,15 +1,5 @@
 package grid
 
-// Connect whatever
-func (g *Grid) Connect(to *Grid) error {
-	return nil
-}
-
-// Disconnect whatever
-func (g *Grid) Disconnect() error {
-	return nil
-}
-
 // Listen whatever
 func (g *Grid) Listen(callback *ListenCallback) error {
 	g.listenHandlers = append(g.listenHandlers, callback)

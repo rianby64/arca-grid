@@ -3,17 +3,17 @@ package main
 import (
 	"log"
 
-	"../../src"
+	arcagrid "../.."
 )
 
 func main() {
-	server := src.Grid{}
+	server := arcagrid.Grid{}
 	request := make(map[string]string)
 	request["action"] = "do-a-query"
 	request["query"] = "a custom query"
 
-	var queryHandler src.RequestHandler = func(requestParams *interface{},
-		context *interface{}, notify src.NotifyCallback) (interface{}, error) {
+	var queryHandler arcagrid.RequestHandler = func(requestParams *interface{},
+		context *interface{}, notify arcagrid.NotifyCallback) (interface{}, error) {
 
 		result := make(map[string]string)
 		result["data"] = (*requestParams).(map[string]string)["query"]
