@@ -7,7 +7,7 @@ import (
 )
 
 func Test_listen_insert_with_context(t *testing.T) {
-	t.Log("Test result from cascade insert with 2 servers")
+	t.Log("Test listen to insert with context")
 
 	// Setup
 	done := make(chan bool)

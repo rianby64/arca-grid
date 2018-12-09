@@ -7,7 +7,7 @@ import (
 )
 
 func Test_listen_delete_with_context(t *testing.T) {
-	t.Log("Test result from cascade delete with 2 servers")
+	t.Log("Test listen to delete with context")
 
 	// Setup
 	done := make(chan bool)

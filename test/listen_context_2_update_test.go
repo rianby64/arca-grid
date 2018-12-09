@@ -7,7 +7,7 @@ import (
 )
 
 func Test_listen_update_with_context(t *testing.T) {
-	t.Log("Test result from cascade update with 2 servers")
+	t.Log("Test listen to update with context")
 
 	// Setup
 	done := make(chan bool)

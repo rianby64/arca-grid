@@ -7,7 +7,7 @@ import (
 )
 
 func Test_listen_query_with_context(t *testing.T) {
-	t.Log("Test result from cascade query with 2 servers")
+	t.Log("Test listen to query with context")
 
 	// Setup
 	done := make(chan bool)
