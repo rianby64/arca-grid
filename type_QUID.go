@@ -26,7 +26,7 @@ type internalQUID struct {
 }
 
 // InternalQUID whatever
-type InternalQUID interface {
+type quid interface {
 	Query()
 	Update()
 	Insert()

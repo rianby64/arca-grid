@@ -11,6 +11,6 @@ type server interface {
 type Grid struct {
 	server
 	internalQUID
-	InternalQUID
+	quid
 	listenHandlers []*ListenCallback
 }
