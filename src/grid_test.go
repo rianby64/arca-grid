@@ -5,7 +5,7 @@ import (
 )
 
 func Test_Listen(t *testing.T) {
-	t.Log("Test notify from InsertDefinition")
+	t.Log("Test Listen method")
 
 	// Setup
 	server := Grid{}
@@ -22,6 +22,33 @@ func Test_Listen(t *testing.T) {
 	if len(server.listenHandlers) == 0 {
 		t.Errorf("handlers '%v' is empty", server.listenHandlers)
 	}
+}
+
+func Test_notify(t *testing.T) {
+	t.Log("Test notify method")
+
+	// Setup
+	done := make(chan bool)
+	listenerReached := false
+	server := Grid{}
+	var listener ListenCallback = func(
+		message interface{},
+		context interface{},
+	) {
+		listenerReached = true
+		done <- true
+	}
+
+	// Excercise
+	server.Listen(&listener)
+	server.notify(nil, nil)
+	<-done
+
+	// Verify
+	if !listenerReached {
+		t.Error("listener is unreachable")
+	}
+
 }
 
 func Test_RegisterMethod_query(t *testing.T) {
