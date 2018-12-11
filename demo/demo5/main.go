@@ -23,9 +23,9 @@ func main() {
 			"source": "a source",
 		}
 
-		var iRequest interface{} = result
+		var iResult interface{} = result
 		var iContext interface{} = context
-		server1.Notify(iRequest, iContext)
+		server1.Notify(iResult, iContext)
 	})
 
 	var listener1 arcagrid.ListenCallback = func(
