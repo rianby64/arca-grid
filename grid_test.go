@@ -41,7 +41,7 @@ func Test_notify(t *testing.T) {
 
 	// Excercise
 	server.Listen(&listener)
-	server.notify(nil, nil)
+	server.Notify(nil, nil)
 	<-done
 
 	// Verify

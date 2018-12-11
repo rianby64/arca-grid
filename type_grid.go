@@ -2,7 +2,7 @@ package grid
 
 type server interface {
 	Listen() error
-	notify(callback *NotifyCallback)
+	Notify(callback *NotifyCallback)
 	RegisterMethod(method string, handler *RequestHandler) error
 	Register(methods *QUID) error
 }
