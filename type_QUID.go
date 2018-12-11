@@ -4,7 +4,7 @@ package grid
 type NotifyCallback func(message interface{})
 
 // ListenCallback whatever
-type ListenCallback func(message interface{}, contexst interface{})
+type ListenCallback func(message interface{}, context interface{})
 
 // RequestHandler whatever
 type RequestHandler func(requestParams *interface{},
