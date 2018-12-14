@@ -14,4 +14,3 @@ Ver la carpeta demo
 - _Unlisten_ general
 - _Unlisten_ según método
 - Pruebas sobre _notify_ cuando un listener ha cesado
-- Tornar ésta solución en un módulo
