@@ -1,7 +1,9 @@
-package grid
+package grid_test
 
 import (
 	"testing"
+
+	grid "github.com/rianby64/arca-grid"
 )
 
 func Test_listen_insert_with_context(t *testing.T) {
@@ -12,7 +14,7 @@ func Test_listen_insert_with_context(t *testing.T) {
 	var msgActual string
 	msgExpected := "message expected"
 
-	var listener ListenCallback = func(
+	var listener grid.ListenCallback = func(
 		_ interface{}, context interface{}) {
 
 		// Verify
@@ -29,10 +31,10 @@ func Test_listen_insert_with_context(t *testing.T) {
 		done <- true
 	}
 
-	var insertDefinition RequestHandler = func(
+	var insertDefinition grid.RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
-		notify NotifyCallback,
+		notify grid.NotifyCallback,
 	) (interface{}, error) {
 
 		// Excercise
@@ -40,7 +42,7 @@ func Test_listen_insert_with_context(t *testing.T) {
 		return nil, nil
 	}
 
-	server := Grid{}
+	server := grid.Grid{}
 	server.Listen(&listener)
 	server.RegisterMethod("insert", &insertDefinition)
 

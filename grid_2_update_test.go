@@ -1,7 +1,9 @@
-package grid
+package grid_test
 
 import (
 	"testing"
+
+	grid "github.com/rianby64/arca-grid"
 )
 
 func Test_Notify_from_updateDefinition(t *testing.T) {
@@ -12,7 +14,7 @@ func Test_Notify_from_updateDefinition(t *testing.T) {
 	var msgActual string
 	msgExpected := "message expected"
 
-	var listener ListenCallback = func(
+	var listener grid.ListenCallback = func(
 		message interface{}, context interface{}) {
 
 		// Verify
@@ -27,10 +29,10 @@ func Test_Notify_from_updateDefinition(t *testing.T) {
 		done <- true
 	}
 
-	var updateDefinition RequestHandler = func(
+	var updateDefinition grid.RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
-		notify NotifyCallback,
+		notify grid.NotifyCallback,
 	) (interface{}, error) {
 
 		// Excercise
@@ -38,7 +40,7 @@ func Test_Notify_from_updateDefinition(t *testing.T) {
 		return nil, nil
 	}
 
-	server := Grid{}
+	server := grid.Grid{}
 	server.Listen(&listener)
 	server.RegisterMethod("update", &updateDefinition)
 
@@ -62,7 +64,7 @@ func Test_Notifications_from_updateDefinition(t *testing.T) {
 	var msgActual2 string
 	msgExpected := "message expected"
 
-	var listener1 ListenCallback = func(
+	var listener1 grid.ListenCallback = func(
 		message interface{}, context interface{}) {
 
 		// Verify
@@ -76,7 +78,7 @@ func Test_Notifications_from_updateDefinition(t *testing.T) {
 		done1 <- true
 	}
 
-	var listener2 ListenCallback = func(
+	var listener2 grid.ListenCallback = func(
 		message interface{}, context interface{}) {
 
 		// Verify
@@ -90,10 +92,10 @@ func Test_Notifications_from_updateDefinition(t *testing.T) {
 		done2 <- true
 	}
 
-	var updateDefinition RequestHandler = func(
+	var updateDefinition grid.RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
-		notify NotifyCallback,
+		notify grid.NotifyCallback,
 	) (interface{}, error) {
 
 		// Excercise
@@ -101,7 +103,7 @@ func Test_Notifications_from_updateDefinition(t *testing.T) {
 		return nil, nil
 	}
 
-	server := Grid{}
+	server := grid.Grid{}
 	server.Listen(&listener1)
 	server.Listen(&listener2)
 	server.RegisterMethod("update", &updateDefinition)
@@ -127,17 +129,17 @@ func Test_result_from_update(t *testing.T) {
 	// Setup
 	msgExpected := "a complex result"
 
-	var updateDefinition RequestHandler = func(
+	var updateDefinition grid.RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
-		notify NotifyCallback,
+		notify grid.NotifyCallback,
 	) (interface{}, error) {
 
 		// Excercise
 		return msgExpected, nil
 	}
 
-	server := Grid{}
+	server := grid.Grid{}
 	server.RegisterMethod("update", &updateDefinition)
 
 	// Excercise
@@ -163,7 +165,7 @@ func Test_result_from_update_and_notify(t *testing.T) {
 	var msgActual string
 	msgExpected := "a complex result"
 
-	var listener ListenCallback = func(
+	var listener grid.ListenCallback = func(
 		message interface{}, context interface{}) {
 
 		// Verify
@@ -177,10 +179,10 @@ func Test_result_from_update_and_notify(t *testing.T) {
 		done <- true
 	}
 
-	var updateDefinition RequestHandler = func(
+	var updateDefinition grid.RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
-		notify NotifyCallback,
+		notify grid.NotifyCallback,
 	) (interface{}, error) {
 
 		// Excercise
@@ -188,7 +190,7 @@ func Test_result_from_update_and_notify(t *testing.T) {
 		return msgExpected, nil
 	}
 
-	server := Grid{}
+	server := grid.Grid{}
 	server.Listen(&listener)
 	server.RegisterMethod("update", &updateDefinition)
 
@@ -219,7 +221,7 @@ func Test_result_from_2updates_and_notify(t *testing.T) {
 	var msgExpected1 interface{} = "a complex result 1"
 	var msgExpected2 interface{} = "a complex result 2"
 
-	var listener ListenCallback = func(
+	var listener grid.ListenCallback = func(
 		message interface{}, context interface{}) {
 
 		// Verify
@@ -234,10 +236,10 @@ func Test_result_from_2updates_and_notify(t *testing.T) {
 		}
 	}
 
-	var updateDefinition RequestHandler = func(
+	var updateDefinition grid.RequestHandler = func(
 		requestParams *interface{},
 		context *interface{},
-		notify NotifyCallback,
+		notify grid.NotifyCallback,
 	) (interface{}, error) {
 
 		// Excercise
@@ -245,7 +247,7 @@ func Test_result_from_2updates_and_notify(t *testing.T) {
 		return *requestParams, nil
 	}
 
-	server := Grid{}
+	server := grid.Grid{}
 	server.Listen(&listener)
 	server.RegisterMethod("update", &updateDefinition)
 

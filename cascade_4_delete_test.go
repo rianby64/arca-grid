@@ -1,22 +1,24 @@
-package grid
+package grid_test
 
 import (
 	"fmt"
 	"testing"
+
+	grid "github.com/rianby64/arca-grid"
 )
 
 func Test_result_cascade_delete_2_servers(t *testing.T) {
 	t.Log("Test result from cascade delete with 2 servers")
 
-	server1 := Grid{}
-	server2 := Grid{}
+	server1 := grid.Grid{}
+	server2 := grid.Grid{}
 	request := make(map[string]string)
 	request["action"] = "do-a-delete"
 	request["delete"] = "a custom delete"
 	msgExpected := "a custom delete + another data"
 
-	var deleteHandler1 RequestHandler = func(requestParams *interface{},
-		context *interface{}, notify NotifyCallback) (interface{}, error) {
+	var deleteHandler1 grid.RequestHandler = func(requestParams *interface{},
+		context *interface{}, notify grid.NotifyCallback) (interface{}, error) {
 
 		iResult, _ := server2.Delete(requestParams, nil)
 		result := iResult.(map[string]string)
@@ -24,8 +26,8 @@ func Test_result_cascade_delete_2_servers(t *testing.T) {
 		return result, nil
 	}
 
-	var deleteHandler2 RequestHandler = func(requestParams *interface{},
-		context *interface{}, notify NotifyCallback) (interface{}, error) {
+	var deleteHandler2 grid.RequestHandler = func(requestParams *interface{},
+		context *interface{}, notify grid.NotifyCallback) (interface{}, error) {
 
 		result := make(map[string]string)
 		result["data"] = (*requestParams).(map[string]string)["delete"]
@@ -48,15 +50,15 @@ func Test_notify_from_cascade_delete_2_servers(t *testing.T) {
 
 	done1 := make(chan bool)
 	done2 := make(chan bool)
-	server1 := Grid{}
-	server2 := Grid{}
+	server1 := grid.Grid{}
+	server2 := grid.Grid{}
 	request := make(map[string]string)
 	request["action"] = "do-a-delete"
 	request["delete"] = "a custom delete"
 	msgExpected := "a custom delete + another data"
 
-	var deleteHandler1 RequestHandler = func(requestParams *interface{},
-		context *interface{}, notify NotifyCallback) (interface{}, error) {
+	var deleteHandler1 grid.RequestHandler = func(requestParams *interface{},
+		context *interface{}, notify grid.NotifyCallback) (interface{}, error) {
 
 		iResult, _ := server2.Delete(requestParams, nil)
 		newresult := make(map[string]string)
@@ -69,7 +71,7 @@ func Test_notify_from_cascade_delete_2_servers(t *testing.T) {
 		return newresult, nil
 	}
 
-	var listener1 ListenCallback = func(
+	var listener1 grid.ListenCallback = func(
 		message interface{}, context interface{}) {
 		result := message.(map[string]string)
 		if result["data"] != msgExpected {
@@ -78,8 +80,8 @@ func Test_notify_from_cascade_delete_2_servers(t *testing.T) {
 		done1 <- true
 	}
 
-	var deleteHandler2 RequestHandler = func(requestParams *interface{},
-		context *interface{}, notify NotifyCallback) (interface{}, error) {
+	var deleteHandler2 grid.RequestHandler = func(requestParams *interface{},
+		context *interface{}, notify grid.NotifyCallback) (interface{}, error) {
 
 		result := make(map[string]string)
 		result["data"] = (*requestParams).(map[string]string)["delete"]
@@ -87,7 +89,7 @@ func Test_notify_from_cascade_delete_2_servers(t *testing.T) {
 		return result, nil
 	}
 
-	var listener2 ListenCallback = func(
+	var listener2 grid.ListenCallback = func(
 		message interface{}, context interface{}) {
 		result := message.(map[string]string)
 		if result["data"] != request["delete"] {
@@ -113,8 +115,8 @@ func Test_notify_from_cascade_delete_2_servers(t *testing.T) {
 func Test_notify_from_cascade_delete_notifier_2_servers(t *testing.T) {
 	t.Log("Test notify from cascade delete that triggers a notification with 2 servers")
 
-	server1 := Grid{}
-	server2 := Grid{}
+	server1 := grid.Grid{}
+	server2 := grid.Grid{}
 	done1 := make(chan bool)
 	done2 := make(chan bool)
 	request := make(map[string]string)
@@ -123,8 +125,8 @@ func Test_notify_from_cascade_delete_notifier_2_servers(t *testing.T) {
 	msgExpected1 := "a custom delete + another data"
 	msgExpected2 := "a custom delete"
 
-	var deleteHandler1 RequestHandler = func(requestParams *interface{},
-		context *interface{}, notify NotifyCallback) (interface{}, error) {
+	var deleteHandler1 grid.RequestHandler = func(requestParams *interface{},
+		context *interface{}, notify grid.NotifyCallback) (interface{}, error) {
 
 		request := (*requestParams).(map[string]string)
 		result := make(map[string]string)
@@ -133,7 +135,7 @@ func Test_notify_from_cascade_delete_notifier_2_servers(t *testing.T) {
 		return result, nil
 	}
 
-	var listener1 ListenCallback = func(
+	var listener1 grid.ListenCallback = func(
 		message interface{}, context interface{}) {
 		result := message.(map[string]string)
 		if result["data"] != msgExpected1 {
@@ -142,8 +144,8 @@ func Test_notify_from_cascade_delete_notifier_2_servers(t *testing.T) {
 		done1 <- true
 	}
 
-	var deleteHandler2 RequestHandler = func(requestParams *interface{},
-		context *interface{}, notify NotifyCallback) (interface{}, error) {
+	var deleteHandler2 grid.RequestHandler = func(requestParams *interface{},
+		context *interface{}, notify grid.NotifyCallback) (interface{}, error) {
 
 		result := make(map[string]string)
 		result["data"] = (*requestParams).(map[string]string)["delete"]
@@ -151,7 +153,7 @@ func Test_notify_from_cascade_delete_notifier_2_servers(t *testing.T) {
 		return result, nil
 	}
 
-	var listener2 ListenCallback = func(
+	var listener2 grid.ListenCallback = func(
 		message interface{}, context interface{}) {
 		result := message.(map[string]string)
 		if result["data"] != msgExpected2 {
